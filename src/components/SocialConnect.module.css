@@ -449,4 +449,112 @@
   }
 }
 
+/* SEO Illustration Section */
+.illustrationSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.seoLabel {
+  font-family: 'Caveat', cursive;
+  font-size: 32px;
+  font-weight: 600;
+  color: #ff6b3d;
+  text-transform: lowercase;
+  margin-bottom: var(--spacing-sm);
+}
+
+.illustrationSection svg {
+  max-width: 200px;
+  height: auto;
+}
+
+/* Feature Grid - Carousel */
+.featureGrid {
+  width: 100%;
+  overflow: hidden;
+  margin: var(--spacing-md) 0;
+}
+
+.seoCarouselTrack {
+  display: flex;
+  gap: var(--spacing-sm);
+  animation: seoCarouselScroll 20s linear infinite;
+  will-change: transform;
+}
+
+@keyframes seoCarouselScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.featureCard {
+  flex-shrink: 0;
+  background: var(--color-card-white);
+  border-radius: 16px;
+  padding: var(--spacing-md);
+  min-width: 180px;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  box-shadow: 0 4px 20px var(--color-card-shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.featureCard:hover {
+  box-shadow: 0 6px 28px var(--color-card-shadow-hover);
+}
+
+.iconPlaceholder {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.featureText {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--color-body-gray);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Responsive adjustments for SEO section */
+@media (max-width: 480px) {
+  .seoLabel {
+    font-size: 28px;
+  }
+  
+  .illustrationSection svg {
+    max-width: 150px;
+  }
+  
+  .featureCard {
+    min-width: 160px;
+    padding: var(--spacing-sm);
+  }
+  
+  .featureText {
+    font-size: 12px;
+  }
+}
 

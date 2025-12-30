@@ -134,15 +134,15 @@
   flex-direction: row;
   width: 100%;
   max-width: 100%;
-  overflow: hidden; /* Changed from auto to hidden for animation */
+  overflow: hidden; /* Hide overflow for scrolling */
   padding: 20px 0;
   margin-bottom: var(--spacing-xl);
   z-index: 2;
-  justify-content: flex-start;
+  justify-content: flex-start; /* Start from left for scrolling */
   align-items: center;
 }
 
-/* Carousel Track for Auto-scroll */
+/* Carousel Track - Infinite Scrolling */
 .carouselTrack {
   display: flex;
   gap: 20px;
@@ -188,13 +188,19 @@
 .iconPlaceholder {
   font-size: 40px;
   margin-bottom: 15px;
-  background: #f0f4f8;
+  background: transparent; /* Removed background */
   width: 70px;
   height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.cardIcon {
+  width: 41px;
+  height: 29px;
+  object-fit: contain;
 }
 
 .featureText {
