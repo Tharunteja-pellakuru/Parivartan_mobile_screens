@@ -25,17 +25,22 @@ export const DigitalMarketingCard = () => {
     { id: 'b3', name: 'Client 9', logo: null },
   ];
 
+  // Adjust density to be between 1x and 2x to avoid overlap but minimize gap
+  const displayTopLogos = [...topLogos, ...topLogos.slice(0, 3)]; // 5 + 3 = 8 items
+  // Match top carousel density: 8 items for bottom as well (original 3 * 2 + 2 = 8)
+  const displayBottomLogos = [...bottomLogos, ...bottomLogos, ...bottomLogos.slice(0, 2)];
+
   return (
     <div className={styles.cardContainer}>
       <p className={styles.accentText}>digital marketing</p>
       
       <div className={styles.carouselContainer}>
         <div className={styles.carouselTrack}>
-          {topLogos.map((item, index) => (
+          {displayTopLogos.map((item, index) => (
             <div
-              key={item.id}
+              key={`${item.id}-${index}`}
               className={`${styles.logoCard} ${styles.topCard}`}
-              style={{ '--index': index, '--total': topLogos.length }}
+              style={{ '--index': index, '--total': displayTopLogos.length }}
             >
               {item.logo ? (
                 <img src={item.logo} alt={item.name} className={styles.logoImage} />
@@ -44,11 +49,11 @@ export const DigitalMarketingCard = () => {
               )}
             </div>
           ))}
-          {bottomLogos.map((item, index) => (
+          {displayBottomLogos.map((item, index) => (
             <div
-              key={item.id}
+              key={`${item.id}-${index}`}
               className={`${styles.logoCard} ${styles.bottomCard}`}
-              style={{ '--index': index, '--total': bottomLogos.length }}
+              style={{ '--index': index, '--total': displayBottomLogos.length }}
             >
               {item.logo ? (
                 <img src={item.logo} alt={item.name} className={styles.logoImage} />

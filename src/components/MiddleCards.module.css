@@ -79,8 +79,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   position: absolute;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -102,7 +102,7 @@
 @keyframes slideTop {
   0% { offset-distance: 0%; transform: scale(0.7); opacity: 0; }
   15% { opacity: 0.5; }
-  50% { offset-distance: 50%; transform: scale(1.2); opacity: 1; box-shadow: 0 15px 40px rgba(0,0,0,0.12); z-index: 50; }
+  50% { offset-distance: 50%; transform: scale(1.1); opacity: 1; box-shadow: 0 15px 40px rgba(0,0,0,0.12); z-index: 50; }
   85% { opacity: 0.5; }
   100% { offset-distance: 100%; transform: scale(0.7); opacity: 0; }
 }
@@ -110,7 +110,7 @@
 @keyframes slideBottom {
   0% { offset-distance: 0%; transform: scale(0.75); opacity: 0; }
   15% { opacity: 0.4; }
-  50% { offset-distance: 50%; transform: scale(1.1); opacity: 1; box-shadow: 0 12px 30px rgba(0,0,0,0.08); z-index: 40; }
+  50% { offset-distance: 50%; transform: scale(1.0); opacity: 1; box-shadow: 0 12px 30px rgba(0,0,0,0.08); z-index: 40; }
   85% { opacity: 0.4; }
   100% { offset-distance: 100%; transform: scale(0.75); opacity: 0; }
 }
@@ -144,7 +144,7 @@
 
 .featureTrack {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   animation: featureScroll 18s linear infinite;
   width: max-content;
 }
@@ -204,8 +204,8 @@
 /* Responsive adjustments */
 @media (min-width: 400px) {
   .logoCard {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
   
   .featureCard {
@@ -232,8 +232,8 @@
   }
   
   .logoCard {
-    width: 100px;
-    height: 100px;
+    width: 85px;
+    height: 85px;
   }
   
   .topCard {
