@@ -82,12 +82,14 @@ const SwipeableLayout = ({ children }) => {
   }, [currentIndex, isTransitioning]);
   
   const handleTouchStart = useCallback((e) => {
-    e.preventDefault();
+    // Only prevent scroll if we are very close to a horizontal swipe (if desired)
+    // but here we want to allow native vertical scroll inside cards.
+    // e.preventDefault(); // REMOVED to allow internal scrolling
     touchStartY.current = e.touches[0].clientY;
   }, []);
   
   const handleTouchMove = useCallback((e) => {
-    e.preventDefault();
+    // e.preventDefault(); // REMOVED to allow internal scrolling
     touchEndY.current = e.touches[0].clientY;
   }, []);
   

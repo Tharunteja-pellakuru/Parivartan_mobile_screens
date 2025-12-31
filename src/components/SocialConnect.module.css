@@ -140,7 +140,7 @@
   margin: 0 auto; /* Removed top margin completely */
   position: relative;
   /* Replaced hard overflow with mask for soft fade edges */
-  overflow: hidden; 
+  overflow: visible; 
   background: transparent;
   display: flex;
   justify-content: center;
