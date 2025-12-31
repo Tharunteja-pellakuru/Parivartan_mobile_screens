@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './MiddleCards.module.css';
 
 // Import logos
@@ -24,21 +24,90 @@ export const DigitalMarketingCard = () => {
   ];
 
   // Adjust density to be between 1x and 2x to avoid overlap but minimize gap
-  // User requested slightly less spacing than 8 items, so increasing to 9 items
-  const displayTopLogos = [...topLogos, ...topLogos.slice(0, 4)]; // 5 + 4 = 9 items
-  const displayBottomLogos = [...bottomLogos, ...bottomLogos, ...bottomLogos]; // 3 + 3 + 3 = 9 items
+  const displayTopLogos = [...topLogos, ...topLogos.slice(0, 4)];
+  const displayBottomLogos = [...bottomLogos, ...bottomLogos, ...bottomLogos];
+
+  // Manual Scroll State
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const isDragging = useRef(false);
+  const lastTouchX = useRef(0);
+
+  const handleTouchStart = (e) => {
+    isDragging.current = true;
+    lastTouchX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging.current) return;
+    const currentX = e.touches[0].clientX;
+    const delta = currentX - lastTouchX.current;
+    
+    // Sensitivity factor: how much % to move per pixel
+    // Moving finger Left (negative delta) -> Should move content Left (increase offset-distance on R->L path)
+    // Path goes from Right (0%) to Left (100%).
+    // So swipe Left (-delta) should Increase progress.
+    setScrollProgress((prev) => prev - delta * 0.15);
+    
+    lastTouchX.current = currentX;
+  };
+
+  const handleTouchEnd = () => {
+    isDragging.current = false;
+  };
+
+  // Helper to calculate styles based on progress
+  const getCardStyle = (index, total) => {
+    const spacing = 100 / total;
+    let rawPos = (spacing * index + scrollProgress) % 100;
+    if (rawPos < 0) rawPos += 100;
+
+    // Calculate scale and opacity to mimic the previous CSS animation
+    // 0% -> scale 0.7, opacity 0
+    // 50% -> scale 1.1, opacity 1
+    // 100% -> scale 0.7, opacity 0
+
+    let scale = 0.7;
+    if (rawPos <= 50) {
+      scale = 0.7 + (0.4 * (rawPos / 50));
+    } else {
+      scale = 1.1 - (0.4 * ((rawPos - 50) / 50));
+    }
+
+    let opacity = 0;
+    if (rawPos < 15) {
+      opacity = (rawPos / 15) * 0.5;
+    } else if (rawPos < 50) {
+      opacity = 0.5 + 0.5 * ((rawPos - 15) / 35);
+    } else if (rawPos < 85) {
+      opacity = 1 - 0.5 * ((rawPos - 50) / 35);
+    } else {
+      opacity = 0.5 * ((100 - rawPos) / 15);
+    }
+
+    return {
+      offsetDistance: `${rawPos}%`,
+      opacity: opacity,
+      transform: `scale(${scale})`,
+      zIndex: Math.round(opacity * 100),
+    };
+  };
 
   return (
     <div className={styles.cardContainer}>
       <p className={styles.accentText}>digital marketing</p>
       
-      <div className={styles.carouselContainer}>
+      <div 
+        className={styles.carouselContainer}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div className={styles.carouselTrack}>
           {displayTopLogos.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
               className={`${styles.logoCard} ${styles.topCard}`}
-              style={{ '--index': index, '--total': displayTopLogos.length }}
+              style={getCardStyle(index, displayTopLogos.length)}
             >
               {item.logo ? (
                 <img src={item.logo} alt={item.name} className={styles.logoImage} />
@@ -51,7 +120,7 @@ export const DigitalMarketingCard = () => {
             <div
               key={`${item.id}-${index}`}
               className={`${styles.logoCard} ${styles.bottomCard}`}
-              style={{ '--index': index, '--total': displayBottomLogos.length }}
+              style={getCardStyle(index, displayBottomLogos.length)}
             >
               {item.logo ? (
                 <img src={item.logo} alt={item.name} className={styles.logoImage} />
