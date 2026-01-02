@@ -26,14 +26,14 @@ export const DigitalMarketingCard = () => {
 
   // Adjust density to be between 1x and 2x to avoid overlap but minimize gap
   // Adjust density to be between 1x and 2x to avoid overlap but minimize gap
-  const displayTopLogos = [...topLogos, ...topLogos.slice(0, 4)];
-  const displayBottomLogos = [...bottomLogos, ...bottomLogos, ...bottomLogos];
+  const displayTopLogos = [...topLogos, ...topLogos]; // 8 cards (2 full sets)
+  const displayBottomLogos = [...bottomLogos, ...bottomLogos, ...bottomLogos]; // 6 cards (3 full sets)
 
   const { getCardStyle, touchHandlers } = useCarouselScroll(0.15);
 
   return (
     <div className={styles.cardContainer}>
-      <p className={styles.accentText}>digital marketing</p>
+      <h2 className={styles.sectionTitle}>digital marketing</h2>
       
       <div 
         className={styles.carouselContainer}

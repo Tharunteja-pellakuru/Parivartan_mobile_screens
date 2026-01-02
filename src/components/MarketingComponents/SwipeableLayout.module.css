@@ -83,7 +83,7 @@
   min-height: 0; /* Important for flex children to shrink properly */
   position: relative;
   overflow: hidden;
-  touch-action: none; /* Disable browser touch handling to prevent pull-to-refresh */
+  touch-action: pan-y; /* Allow vertical pan bubbling */
   overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
@@ -108,8 +108,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 15px;
+  justify-content: center; /* Centered vertically in the middle area */
+  padding: 20px; /* Reduced balanced padding */
   box-sizing: border-box;
 }
 

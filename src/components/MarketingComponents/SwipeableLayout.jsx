@@ -56,13 +56,17 @@ const SwipeableLayout = ({ children }) => {
   
   const handleWheel = useCallback((e) => {
     if (isTransitioning) return;
-    e.preventDefault();
-    if (e.deltaY > 0) {
+    
+    // Check if we are at horizontal/vertical boundary
+    if (e.deltaY > 0 && currentIndex < totalCards - 1) {
+      e.preventDefault();
       goToNext();
-    } else if (e.deltaY < 0) {
+    } else if (e.deltaY < 0 && currentIndex > 0) {
+      e.preventDefault();
       goToPrev();
     }
-  }, [goToNext, goToPrev, isTransitioning]);
+    // If at last card and scrolling down, or first and scrolling up, let it bubble to page scroll
+  }, [goToNext, goToPrev, isTransitioning, currentIndex, totalCards]);
   
   useEffect(() => {
     const container = containerRef.current;

@@ -1,4 +1,4 @@
-/* Styles for swipeable middle cards */
+  /* Styles for swipeable middle cards */
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600&family=Mulish:wght@400&display=swap');
 
 /* Card container */
@@ -8,9 +8,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 12px;
-  padding: 8px 0 60px; /* Added more bottom padding to prevent clipping of animated cards and shadows */
+  padding: 10px 0; 
 }
 
 /* Accent text (digital marketing) */
@@ -79,22 +79,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 100px; /* Increased from 80px */
+  height: 100px; /* Increased from 80px */
   position: absolute;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   offset-rotate: auto 180deg;
   offset-anchor: 50% 100%;
+  margin: 1px; /* Minimal margin for tight spacing matching image */
 }
 
 .topCard {
-  offset-path: path("M 1000 320 Q 600 50 200 320");
+  offset-path: path("M 1200 320 Q 600 50 0 320"); /* Full track width to prevent overlap */
   offset-distance: var(--offset-pos);
 }
 
 .bottomCard {
-  offset-path: path("M 1000 500 Q 600 230 200 500");
+  offset-path: path("M 1200 500 Q 600 230 0 500"); /* Full track width to prevent overlap */
   offset-distance: var(--offset-pos);
 }
 
@@ -192,8 +193,8 @@
 /* Responsive adjustments */
 @media (min-width: 400px) {
   .logoCard {
-    width: 70px;
-    height: 70px;
+    width: 120px; /* Increased from 90px */
+    height: 120px; /* Increased from 90px */
   }
   
   .featureCard {
@@ -216,7 +217,7 @@
 
 @media (min-width: 768px) {
   .carouselContainer {
-    height: 600px;
+    height: 650px; /* Increased from 600px for larger cards */
   }
   
   .carouselTrack {
@@ -224,16 +225,16 @@
   }
   
   .logoCard {
-    width: 85px;
-    height: 85px;
+    width: 150px; /* Increased from 110px */
+    height: 150px; /* Increased from 110px */
   }
   
   .topCard {
-    offset-path: path("M 1400 320 Q 800 50 200 320");
+    offset-path: path("M 1700 320 Q 850 50 100 320");
   }
   
   .bottomCard {
-    offset-path: path("M 1400 500 Q 800 230 200 500");
+    offset-path: path("M 1700 500 Q 850 230 100 500");
   }
   
   .illustration {
