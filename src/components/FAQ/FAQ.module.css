@@ -3,7 +3,7 @@
 .container {
   width: 100%;
   padding: 0 20px 100px;
-  background-color: #f7fdf7; /* Very light green background matching image */
+  background-color: #F6FFF0; /* Updated light green background */
   display: flex;
   flex-direction: column;
   align-items: center;
