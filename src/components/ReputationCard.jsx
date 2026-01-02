@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './MiddleCards.module.css';
-
+import FeatureCardCarousel from './FeatureCardCarousel';
 import managementImg from '../assets/images/Management.png';
 import thumbIcon from '../assets/images/Thumb.png';
 import monitorIcon from '../assets/images/Monitor.png';
@@ -16,23 +16,10 @@ export const ReputationCard = () => {
   return (
     <div className={styles.cardContainer}>
       <h2 className={styles.sectionTitle}>online reputation management</h2>
-      
       <div className={styles.illustrationWrapper}>
         <img src={managementImg} alt="Reputation Management" className={styles.illustration} />
       </div>
-
-      <div className={styles.featureCarousel}>
-        <div className={styles.featureTrack}>
-          {[...features, ...features].map((feature, index) => (
-            <div key={index} className={styles.featureCard}>
-              <div className={styles.featureIcon}>
-                <img src={feature.icon} alt="" />
-              </div>
-              <p className={styles.featureText}>{feature.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      <FeatureCardCarousel features={features} />
     </div>
   );
 };

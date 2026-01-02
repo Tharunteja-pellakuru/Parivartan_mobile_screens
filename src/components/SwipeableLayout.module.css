@@ -36,30 +36,35 @@
 .heading {
   font-family: 'Caveat', cursive;
   font-weight: 500;
-  font-size: 28px;
+  font-size: clamp(24px, 8vw, 42px); /* Fluid size based on screen width */
   font-style: italic;
-  line-height: 36px;
+  line-height: 1.1;
   color: #000;
   text-align: center;
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  width: 100%;
 }
 
-.line1 {
-  display: block;
-}
-
-.line2 {
-  display: block;
+.line1, .line2 {
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
 }
 
 .underlineImage {
-  width: 180px;
+  position: absolute;
+  top: 65%;
+  left: 35%;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  width: clamp(160px, 55vw, 300px); /* Scales with text */
   height: auto;
-  margin: -8px 0 -6px -90px;
-  transform: rotate(-2deg);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.8;
 }
 
 .description {
@@ -207,16 +212,6 @@
 
 /* Responsive adjustments */
 @media (min-width: 400px) {
-  .heading {
-    font-size: 32px;
-    line-height: 40px;
-  }
-  
-  .underlineImage {
-    width: 220px;
-    margin: -10px 0 -8px -110px;
-  }
-  
   .description {
     font-size: 15px;
     max-width: 360px;
@@ -230,16 +225,6 @@
 @media (min-width: 768px) {
   .fixedHeader {
     padding: 40px 30px 20px;
-  }
-  
-  .heading {
-    font-size: 42px;
-    line-height: 50px;
-  }
-  
-  .underlineImage {
-    width: 300px;
-    margin: -14px 0 -10px -150px;
   }
   
   .description {
@@ -259,5 +244,18 @@
   .dot {
     width: 12px;
     height: 12px;
+  }
+}
+
+.footerIconImg {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .footerIconImg {
+    width: 28px;
+    height: 28px;
   }
 }

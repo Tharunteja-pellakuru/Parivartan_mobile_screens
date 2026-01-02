@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import styles from './MiddleCards.module.css';
+import useCarouselScroll from '../hooks/useCarouselScroll';
 
 // Import logos
 import client1Logo from '../assets/logos/Client 1.png';
@@ -24,73 +25,11 @@ export const DigitalMarketingCard = () => {
   ];
 
   // Adjust density to be between 1x and 2x to avoid overlap but minimize gap
+  // Adjust density to be between 1x and 2x to avoid overlap but minimize gap
   const displayTopLogos = [...topLogos, ...topLogos.slice(0, 4)];
   const displayBottomLogos = [...bottomLogos, ...bottomLogos, ...bottomLogos];
 
-  // Manual Scroll State
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const isDragging = useRef(false);
-  const lastTouchX = useRef(0);
-
-  const handleTouchStart = (e) => {
-    isDragging.current = true;
-    lastTouchX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging.current) return;
-    const currentX = e.touches[0].clientX;
-    const delta = currentX - lastTouchX.current;
-    
-    // Sensitivity factor: how much % to move per pixel
-    // Moving finger Left (negative delta) -> Should move content Left (increase offset-distance on R->L path)
-    // Path goes from Right (0%) to Left (100%).
-    // So swipe Left (-delta) should Increase progress.
-    setScrollProgress((prev) => prev - delta * 0.15);
-    
-    lastTouchX.current = currentX;
-  };
-
-  const handleTouchEnd = () => {
-    isDragging.current = false;
-  };
-
-  // Helper to calculate styles based on progress
-  const getCardStyle = (index, total) => {
-    const spacing = 100 / total;
-    let rawPos = (spacing * index + scrollProgress) % 100;
-    if (rawPos < 0) rawPos += 100;
-
-    // Calculate scale and opacity to mimic the previous CSS animation
-    // 0% -> scale 0.85, opacity 0.6
-    // 50% -> scale 1.1, opacity 1
-    // 100% -> scale 0.85, opacity 0.6
-
-    let scale = 0.85;
-    if (rawPos <= 50) {
-      scale = 0.85 + (0.25 * (rawPos / 50));
-    } else {
-      scale = 1.1 - (0.25 * ((rawPos - 50) / 50));
-    }
-
-    let opacity = 0.6;
-    if (rawPos < 15) {
-      opacity = 0.6 + (rawPos / 15) * 0.2; // 0.6 -> 0.8
-    } else if (rawPos < 50) {
-      opacity = 0.8 + 0.2 * ((rawPos - 15) / 35); // 0.8 -> 1.0
-    } else if (rawPos < 85) {
-      opacity = 1 - 0.2 * ((rawPos - 50) / 35); // 1.0 -> 0.8
-    } else {
-      opacity = 0.8 - 0.2 * ((100 - rawPos) / 15); // 0.8 -> 0.6
-    }
-
-    return {
-      '--offset-pos': `${rawPos}%`,
-      opacity: opacity,
-      transform: `scale(${scale})`,
-      zIndex: Math.round(opacity * 100),
-    };
-  };
+  const { getCardStyle, touchHandlers } = useCarouselScroll(0.15);
 
   return (
     <div className={styles.cardContainer}>
@@ -98,9 +37,7 @@ export const DigitalMarketingCard = () => {
       
       <div 
         className={styles.carouselContainer}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        {...touchHandlers}
       >
         <div className={styles.carouselTrack}>
           {displayTopLogos.map((item, index) => (

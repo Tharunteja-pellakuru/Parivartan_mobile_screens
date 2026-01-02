@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './MiddleCards.module.css';
-
+import FeatureCardCarousel from './FeatureCardCarousel';
 import groupIcon from '../assets/logos/Group Icon.png';
 import seoIcon from '../assets/logos/Seo.png';
 import statsIcon from '../assets/logos/Stats Icon.png';
@@ -23,18 +23,7 @@ export const SeoCard = () => {
       </div>
 
       {/* Feature Cards */}
-      <div className={styles.featureCarousel}>
-        <div className={styles.featureTrack}>
-          {[...features, ...features].map((feature, index) => (
-            <div key={index} className={styles.featureCard}>
-              <div className={styles.featureIcon}>
-                <img src={feature.icon} alt="" />
-              </div>
-              <p className={styles.featureText}>{feature.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      <FeatureCardCarousel features={features} />
     </div>
   );
 };
