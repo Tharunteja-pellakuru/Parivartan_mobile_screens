@@ -9,7 +9,10 @@ html, body {
   max-width: 100%;
   overflow-x: clip !important; /* Newer property for absolute clipping */
   overflow-y: auto !important;
-  background: #ffffff;
+  background-image: url('./assets/images/CardBG.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
   touch-action: pan-y;
 }
 
