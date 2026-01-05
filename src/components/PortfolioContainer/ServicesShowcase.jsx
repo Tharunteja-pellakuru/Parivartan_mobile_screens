@@ -62,13 +62,13 @@ const ServicesShowcase = () => {
     const handleNext = () => {
         if (isAnimating) return;
 
-        // If at the last service, scroll down to the next section
+        // If at the last service, attempt to scroll to next section or stop
         if (activeIndex === servicesData.length - 1) {
-            const nextSection = document.getElementById('dummy-section-container');
+            const nextSection = document.getElementById('dummy-section-container'); // Or whatever the next section ID is
             if (nextSection) {
                 nextSection.scrollIntoView({ behavior: 'smooth' });
-                return;
             }
+            return; // STOP here regardless of whether nextSection exists
         }
 
         setDirection('up'); // Content moving up (entering from bottom)
