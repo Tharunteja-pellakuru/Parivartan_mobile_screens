@@ -170,7 +170,8 @@
 .footer {
   background-color: #f9f9f9;
   padding: 40px 20px 60px;
-  padding-bottom: max(60px, env(safe-area-inset-bottom));
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  margin-bottom: 100px;
   text-align: center;
   display: flex;
   flex-direction: column;
