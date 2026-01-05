@@ -158,8 +158,8 @@ const ServicesShowcase = () => {
                     <span className="title-line">while delivering</span>
                     <span className="title-line highlighted">
                         outstanding branding
-                        <svg className="header-underline" viewBox="0 0 300 20" preserveAspectRatio="none">
-                            <path d="M5,15 Q150,2 295,12" stroke="#4CAF50" strokeWidth="3" fill="none" strokeLinecap="round" />
+                        <svg className="header-underline" width="198" height="26" viewBox="0 0 198 26" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                            <path d="M0.752181 24.3648C24.2033 10.7729 96.3954 -10.9965 197.555 10.6615" stroke="#73BF44" strokeWidth="3"/>
                         </svg>
                     </span>
                 </h2>

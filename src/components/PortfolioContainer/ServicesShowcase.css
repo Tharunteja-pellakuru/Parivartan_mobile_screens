@@ -32,14 +32,17 @@
 .title-line.highlighted {
     position: relative;
     margin-top: 2px;
+    z-index: 1;
 }
 
 .header-underline {
     position: absolute;
-    bottom: -8px;
-    left: 10%;
-    width: 90%;
-    height: 12px;
+    bottom: -16px;
+    left: 34%;
+    width: 72%;
+    height: 26px;
+    z-index: -1;
+    pointer-events: none;
 }
 
 .services-description {

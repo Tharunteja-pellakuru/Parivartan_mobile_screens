@@ -76,8 +76,8 @@ export const FAQ = () => {
           frequently <br />
           <span className={styles.brandName}>
             asking questions
-            <svg className={styles.underlineSvg} width="220" height="20" viewBox="0 0 220 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 15C60 4 160 2 218 12" stroke="#83C341" strokeWidth="4" strokeLinecap="round"/>
+            <svg className={styles.underlineSvg} width="198" height="26" viewBox="0 0 198 26" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+              <path d="M0.752181 24.3648C24.2033 10.7729 96.3954 -10.9965 197.555 10.6615" stroke="#73BF44" strokeWidth="3"/>
             </svg>
           </span>
         </h2>

@@ -114,7 +114,9 @@ const SwipeableLayout = ({ children }) => {
           <h1 className={styles.heading}>
             <span className={styles.line1}>
               get socially connected like
-              <img src={underlineStroke} alt="" className={styles.underlineImage} />
+              <svg className={styles.underlineImage} width="198" height="26" viewBox="0 0 198 26" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0.752181 24.3648C24.2033 10.7729 96.3954 -10.9965 197.555 10.6615" stroke="#73BF44" strokeWidth="3"/>
+              </svg>
             </span>
             <span className={styles.line2}>never before</span>
           </h1>

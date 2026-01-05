@@ -38,13 +38,13 @@
 
 .underlineSvg {
   position: absolute;
-  bottom: -15px; /* Moved further down */
-  left: 50%;
-  transform: translateX(-40%) rotate(-0.5deg); /* Shifted further right (-40% instead of -45%) */
-  width: 115%; /* Slightly wider */
-  height: auto;
+  bottom: -15px;
+  left: 17%;
+  width: 95%; 
+  height: 26px;
   z-index: -1;
   pointer-events: none;
+  transform: none;
 }
 
 .faqList {

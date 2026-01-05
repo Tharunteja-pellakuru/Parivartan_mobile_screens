@@ -33,15 +33,20 @@
   letter-spacing: -1px;
 }
 
+.headingText {
+  position: relative;
+  z-index: 2;
+}
+
 .underlineSvg {
   position: absolute;
-  bottom: -32px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 140%;
-  max-width: 320px;
-  height: auto;
-  z-index: 1;
+  bottom: -20px;
+  left: -5%;
+  width: 110%;
+  max-width: none;
+  height: 26px;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .subHeading {

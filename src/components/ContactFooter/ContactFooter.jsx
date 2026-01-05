@@ -7,10 +7,12 @@ const ContactFooter = () => {
       <div className={styles.contactSection}>
         <div className={styles.headingBlock}>
           <h2 className={styles.heading}>
-            get connected
-            <svg className={styles.underlineSvg} width="220" height="30" viewBox="0 0 220 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 20C70 5 150 5 215 20" stroke="#83C341" strokeWidth="3" strokeLinecap="round"/>
-            </svg>
+            <span className={styles.headingText}>
+              get connected
+              <svg className={styles.underlineSvg} width="198" height="26" viewBox="0 0 198 26" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0.752181 24.3648C24.2033 10.7729 96.3954 -10.9965 197.555 10.6615" stroke="#73BF44" strokeWidth="3"/>
+              </svg>
+            </span>
           </h2>
           <p className={styles.subHeading}>send message</p>
           <p className={styles.tagline}>Change is Waiting to Happen. Let's Catch Up!</p>
