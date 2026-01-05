@@ -1,4 +1,5 @@
 import './App.css';
+import HomeContainer from './components/HomeContainer/HomeContainer';
 import SwipeableLayout from './components/MarketingComponents/SwipeableLayout';
 import { DigitalMarketingCard } from './components/MarketingComponents/DigitalMarketingCard';
 import { SeoCard } from './components/MarketingComponents/SeoCard';
@@ -13,6 +14,7 @@ import BottomNav from './components/BottomNav/BottomNav';
 function App() {
   return (
     <div className="App">
+      <HomeContainer />
       <SwipeableLayout>
         <DigitalMarketingCard />
         <SeoCard />

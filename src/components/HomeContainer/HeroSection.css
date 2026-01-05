@@ -1,0 +1,99 @@
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Position content at bottom */
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    padding-top: 100px;
+    /* Ensured space for rating badge */
+    padding-bottom: 120px;
+    /* Space for bottom nav + gap */
+    box-sizing: border-box;
+    width: 100%;
+    background-image: url('../../assets/images/hero-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-title {
+    width: 309px;
+    color: #000;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-top: 20px;
+    margin-bottom: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-line-1 {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+
+.underline-svg {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    pointer-events: none;
+}
+
+.title-line-2 {
+    margin-top: 5px;
+}
+
+.cta-button {
+    background-color: #5ca32a; /* Replaced var(--primary-green) */
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(92, 163, 42, 0.3);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 20px;
+}
+
+.cta-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 5px rgba(92, 163, 42, 0.2);
+}
+
+.portfolio-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+    gap: 5px;
+    text-decoration: none;
+    color: #1a1a1a; /* Replaced var(--text-dark) */
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: gap 0.2s;
+}
+
+.portfolio-link:hover {
+    gap: 8px;
+}
+
+.arrow-icon {
+    display: block;
+}
