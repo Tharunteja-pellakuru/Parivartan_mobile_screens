@@ -10,7 +10,8 @@
 
 .portfolio-description {
     text-align: center;
-    font-family: 'Inter', sans-serif; /* Replaced var(--font-main) */
+    font-family: 'Inter', sans-serif;
+    /* Replaced var(--font-main) */
     color: #555;
     font-size: 0.95rem;
     line-height: 1.25;
@@ -35,9 +36,10 @@
 /* Container for Frame + Screen */
 .mobile-device-frame {
     position: relative;
-    width: 250px; /* Fixed width for the phone */
+    width: 250px;
+    /* Fixed width for the phone */
     height: auto;
-    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
     transition: transform 0.3s ease;
 }
 
@@ -50,7 +52,8 @@
     position: relative;
     width: 100%;
     height: auto;
-    z-index: 5; /* Sit behind content */
+    z-index: 5;
+    /* Sit behind content */
     pointer-events: none;
     display: block;
 }
@@ -62,9 +65,11 @@
     left: 7%;
     width: 86%;
     height: 94%;
-    border-radius: 30px; /* Match phone corners */
+    border-radius: 30px;
+    /* Match phone corners */
     overflow: hidden;
-    z-index: 10; /* Sit on top of frame */
+    z-index: 10;
+    /* Sit on top of frame */
     background: #000;
     /* Optional: shape for notch if needed, but generic rounded usually works well with this mockup style */
 }
@@ -77,10 +82,25 @@
 }
 
 @keyframes scrollMobile {
-    0% { transform: translateY(0); }
-    45% { transform: translateY(calc(-100% + 400px)); } /* Scroll to bottom */
-    55% { transform: translateY(calc(-100% + 400px)); } /* Pause at bottom */
-    100% { transform: translateY(0); } /* Scroll back up */
+    0% {
+        transform: translateY(0);
+    }
+
+    45% {
+        transform: translateY(calc(-100% + 400px));
+    }
+
+    /* Scroll to bottom */
+    55% {
+        transform: translateY(calc(-100% + 400px));
+    }
+
+    /* Pause at bottom */
+    100% {
+        transform: translateY(0);
+    }
+
+    /* Scroll back up */
 }
 
 /* Nav arrows adjustment */
@@ -89,7 +109,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 280px; /* Slightly wider than mobile for breathing room */
+    max-width: 280px;
+    /* Slightly wider than mobile for breathing room */
     margin-top: 20px;
 }
 
@@ -105,7 +126,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
+    height: 45px;
+    /* Increased from 30px */
 }
 
 .company-logo {
@@ -119,7 +141,8 @@
     height: 30px;
     color: #000;
     text-align: center;
-    font-family: 'Caveat', cursive; /* Replaced var(--font-hand) */
+    font-family: 'Caveat', cursive;
+    /* Replaced var(--font-hand) */
     font-size: 36px;
     font-style: normal;
     font-weight: 500;
@@ -185,7 +208,8 @@
 .info-card p {
     position: relative;
     z-index: 1;
-    font-family: 'Caveat', cursive; /* Replaced var(--font-hand) */
+    font-family: 'Caveat', cursive;
+    /* Replaced var(--font-hand) */
     font-size: 1.2rem;
     line-height: 1.2;
     color: #333;
@@ -193,7 +217,8 @@
 
 .green-blob {
     position: absolute;
-    width: 30px; /* Adjusted visual size */
+    width: 30px;
+    /* Adjusted visual size */
     height: 40px;
     z-index: 1;
     display: flex;
@@ -213,13 +238,15 @@
 
 .blob-left {
     top: auto;
-    bottom: 30px; /* Moved up from edge */
+    bottom: 30px;
+    /* Moved up from edge */
     left: -15px;
     transform: rotate(180deg);
 }
 
 .blob-right {
-    top: 30px; /* Moved down from edge */
+    top: 30px;
+    /* Moved down from edge */
     right: -15px;
     transform: rotate(0deg);
 }

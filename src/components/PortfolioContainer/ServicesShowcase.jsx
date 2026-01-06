@@ -1,25 +1,25 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './ServicesShowcase.css';
 import ExplorePopup from './ExplorePopup';
-import andhraLogo from '../../assets/images/andhra-canteen-logo.png';
-import sudhaLogo from '../../assets/images/sudha-logo.png';
-import brochureImg from '../../assets/images/service-sudha-brochure-new.png';
-import alley91Logo from '../../assets/images/alley91-logo.png';
-import alley91Grid1 from '../../assets/images/alley91-grid-1.png';
-import alley91Grid2 from '../../assets/images/alley91-grid-2.png';
-import alley91Grid3 from '../../assets/images/alley91-grid-3.png';
-import alley91Grid4 from '../../assets/images/alley91-grid-4.png';
-import alley91Grid5 from '../../assets/images/alley91-grid-5.png';
-import alley91Grid6 from '../../assets/images/alley91-grid-6.png';
-import summerGreenLogo from '../../assets/images/summer-green-logo.png';
-import summerGreenResort from '../../assets/images/summer-green-resort.png';
+import andhraLogoV2 from '../../assets/images/andhra-logo-v2.png';
+import sudhaLogoV2 from '../../assets/images/sudha-logo-v2.png';
+import alley91LogoV2 from '../../assets/images/alley91-logo-v2.png';
+import alley91Grid1V2 from '../../assets/images/alley91-grid-1-v2.png';
+import alley91Grid2V2 from '../../assets/images/alley91-grid-2-v2.png';
+import alley91Grid3V2 from '../../assets/images/alley91-grid-3-v2.png';
+import alley91Grid4V2 from '../../assets/images/alley91-grid-4-v2.png';
+import alley91Grid5V2 from '../../assets/images/alley91-grid-5-v2.png';
+import alley91Grid6V2 from '../../assets/images/alley91-grid-6-v2.png';
+import summerGreenLogoV2 from '../../assets/images/summer-green-logo-v2.png';
+import summerGreenResortV2 from '../../assets/images/summer-green-resort-v2.png';
+import sudhaBrochureV2 from '../../assets/images/sudha-brochure-v2.png';
 
 const servicesData = [
     {
         id: 'branding',
         subtitle: 'corporate branding',
         image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000',
-        logo: andhraLogo,
+        logo: andhraLogoV2,
         logoAlt: 'Andhra Canteen Logo',
         pill: 'in-store branding  •  print collateral  •  menu designs  •  website',
         type: 'single'
@@ -27,8 +27,8 @@ const servicesData = [
     {
         id: 'sudha',
         subtitle: 'print, media, design',
-        image: brochureImg,
-        logo: sudhaLogo,
+        image: sudhaBrochureV2,
+        logo: sudhaLogoV2,
         logoAlt: 'Sudha Analyticals Logo',
         pill: 'brochure  •  poster  •  leaflets  •  visiting card',
         type: 'single'
@@ -36,8 +36,8 @@ const servicesData = [
     {
         id: 'photoshoot',
         subtitle: 'corporate photoshoot',
-        images: [alley91Grid1, alley91Grid2, alley91Grid3, alley91Grid4, alley91Grid5, alley91Grid6],
-        logo: alley91Logo,
+        images: [alley91Grid1V2, alley91Grid2V2, alley91Grid3V2, alley91Grid4V2, alley91Grid5V2, alley91Grid6V2],
+        logo: alley91LogoV2,
         logoAlt: "Alley Photo shoot",
         pill: 'photography  •  event  •  branding',
         type: 'grid'
@@ -45,8 +45,8 @@ const servicesData = [
     {
         id: 'summer-green',
         subtitle: 'print, media, design',
-        image: summerGreenResort,
-        logo: summerGreenLogo,
+        image: summerGreenResortV2,
+        logo: summerGreenLogoV2,
         logoAlt: 'Summer Green Resort Logo',
         pill: 'print  •  media  •  design',
         type: 'single'
@@ -59,12 +59,12 @@ const ServicesShowcase = () => {
     const [direction, setDirection] = useState(null);
     const [isAnimating, setIsAnimating] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
-    
+
     // Refs for state access inside event listeners
     const activeIndexRef = useRef(0);
     const isAnimatingRef = useRef(false);
     const sectionRef = useRef(null);
-    
+
     // Touch tracking
     const touchStartY = useRef(0);
     const touchStartX = useRef(0);
@@ -126,10 +126,10 @@ const ServicesShowcase = () => {
             const viewportHeight = window.innerHeight;
             const elementCenter = rect.top + rect.height / 2;
             const viewportCenter = viewportHeight / 2;
-            
+
             // Relaxed threshold: 30% of viewport height (easier to catch)
-            const threshold = viewportHeight * 0.3; 
-            
+            const threshold = viewportHeight * 0.3;
+
             // Also check if element effectively covers the main interaction area
             // (Top is near or above top edge, Bottom is near or below bottom edge)
             const coversScreen = rect.top <= viewportHeight * 0.2 && rect.bottom >= viewportHeight * 0.8;
@@ -157,8 +157,8 @@ const ServicesShowcase = () => {
 
             // Trigger navigation (debounce could be added if needed, but simple check works)
             if (Math.abs(e.deltaY) > 10) {
-                 if (isScrollingDown) handleNext();
-                 else handlePrev();
+                if (isScrollingDown) handleNext();
+                else handlePrev();
             }
         };
 
@@ -187,23 +187,23 @@ const ServicesShowcase = () => {
 
         const handleTouchEndNonPassive = (e) => {
             if (!isCenteredInViewport()) return;
-            
+
             const touchEndY = e.changedTouches[0].clientY;
             const deltaY = touchStartY.current - touchEndY;
-            
+
             // Only trigger if we prevented default (meaning we locked it), or just purely based on logic
             // To be safe, re-check boundaries and magnitude
-             const currentIndex = activeIndexRef.current;
-             const isSwipingUp = deltaY > 0;
-             const isSwipingDown = deltaY < 0;
+            const currentIndex = activeIndexRef.current;
+            const isSwipingUp = deltaY > 0;
+            const isSwipingDown = deltaY < 0;
 
-             if (Math.abs(deltaY) > 40) { // Minimum swipe distance
-                 if (isSwipingUp && currentIndex < servicesData.length - 1) {
-                     handleNext();
-                 } else if (isSwipingDown && currentIndex > 0) {
-                     handlePrev();
-                 }
-             }
+            if (Math.abs(deltaY) > 40) { // Minimum swipe distance
+                if (isSwipingUp && currentIndex < servicesData.length - 1) {
+                    handleNext();
+                } else if (isSwipingDown && currentIndex > 0) {
+                    handlePrev();
+                }
+            }
         };
 
         element.addEventListener('wheel', handleWheelNonPassive, { passive: false });
@@ -216,7 +216,7 @@ const ServicesShowcase = () => {
             element.removeEventListener('touchmove', handleTouchMoveNonPassive);
             element.removeEventListener('touchend', handleTouchEndNonPassive);
         };
-    }, [handleNext, handlePrev]); 
+    }, [handleNext, handlePrev]);
 
     const currentService = servicesData[activeIndex];
     const previousService = prevIndex !== null ? servicesData[prevIndex] : null;
@@ -233,7 +233,7 @@ const ServicesShowcase = () => {
                     <span className="title-line highlighted">
                         outstanding branding
                         <svg className="header-underline" width="198" height="26" viewBox="0 0 198 26" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                            <path d="M0.752181 24.3648C24.2033 10.7729 96.3954 -10.9965 197.555 10.6615" stroke="#73BF44" strokeWidth="3"/>
+                            <path d="M0.752181 24.3648C24.2033 10.7729 96.3954 -10.9965 197.555 10.6615" stroke="#73BF44" strokeWidth="3" />
                         </svg>
                     </span>
                 </h2>

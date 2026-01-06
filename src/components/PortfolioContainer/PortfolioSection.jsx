@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './PortfolioSection.css';
 import mobileMockup from '../../assets/images/Mobile.png';
 import mobileScrollImage from '../../assets/images/MobileImage.png';
-import accel1Logo from '../../assets/images/accel1-logo.png';
+import accel1LogoV2 from '../../assets/images/accel1-logo-v2.png';
 import TestimonialPopup from './TestimonialPopup';
 import html5Logo from '../../assets/images/html5-logo.png';
 import pythonLogo from '../../assets/images/python-logo.png';
@@ -28,7 +28,7 @@ const PortfolioSection = () => {
                 <div className="nav-arrows">
                     <button className="arrow-btn">‹</button>
                     <span className="company-name">
-                        <img src={accel1Logo} alt="ACCEL1" className="company-logo" />
+                        <img src={accel1LogoV2} alt="ACCEL1" className="company-logo" />
                     </span>
                     <button className="arrow-btn">›</button>
                 </div>
