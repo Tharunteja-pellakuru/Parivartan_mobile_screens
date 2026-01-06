@@ -1,6 +1,6 @@
 .bottomNavContainer {
     position: fixed;
-    bottom: 20px;
+    bottom: calc(50px + env(safe-area-inset-bottom));
     left: 0;
     right: 0;
     display: flex;
