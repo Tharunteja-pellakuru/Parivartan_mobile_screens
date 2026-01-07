@@ -1,202 +1,207 @@
-    
-.testimonial-popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    /* Darker tint as requested */
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    animation: fadeInOverlay 0.4s ease-out forwards;
-}
-
-@keyframes fadeInOverlay {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-.testimonial-popup-content {
-    position: relative;
-    width: 100%;
-    max-width: 430px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    animation: popupHighlight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@keyframes popupHighlight {
-    0% {
-        opacity: 0;
-        transform: scale(0.8) translateY(20px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-.close-button {
-    position: fixed; /* Changed from absolute to fixed */
-    top: 20px; /* Distance from top of screen */
-    right: 20px; /* Distance from right of screen */
-    background: white;
-    border: none;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 2002;
-}
-
-.testimonial-visual-wrapper {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.chat-bubble-container {
-    position: relative;
-    width: 450px;
-    height: 338px;
-    z-index: 5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.custom-bubble-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.25));
-}
-
-.chat-bubble-text-content {
-    position: relative;
-    z-index: 6;
-    width: 450px;
-    height: 338px;
-    padding: 0px 70px;
-    padding-top: 80px;
-    /* Offset for the top tail to align text with the bulb's visual center */
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* Center vertically within the bulb area */
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-.testimonial-text {
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-size: 0.8rem;
-    color: #333;
-    padding: 0;
-    margin: 0;
-    margin-bottom: 20px;
-    /* Balanced spacing to author */
-    line-height: 1.25;
-    max-width: 100%;
-    word-wrap: break-word;
-}
-
-.testimonial-author {
-    font-family: 'Caveat', cursive; /* Replaced var(--font-hand) */
-    font-weight: 500;
-    font-size: 1.8rem;
-    color: #1a1a1a;
-    margin: 0;
-    letter-spacing: 0.5px;
-    opacity: 0.95;
-    text-align: center;
-}
-
-.decoration-swirls {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 338px;
-    /* Match bubble container height */
-    pointer-events: none;
-    z-index: 4;
-}
-
-.swirl {
-    position: absolute;
-}
-
-.swirl-left {
-    top: 90px;
-    left: -25px;
-    transform: rotate(-40deg);
-}
-
-.swirl-right {
-    top: 20px;
-    right: -50px;
-    transform: rotate(-5deg);
-}
-/* Responsive Scaling for Mobile Devices */
-@media (max-width: 600px) {
-    .testimonial-popup-content {
-        padding: 20px 10px; /* Reduce padding */
+    .testimonial-popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100vw;
-        max-width: 100vw;
-        overflow-x: hidden;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        /* Darker tint as requested */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 2000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        animation: fadeInOverlay 0.4s ease-out forwards;
+    }
+
+    @keyframes fadeInOverlay {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .testimonial-popup-content {
+        position: relative;
+        width: 100%;
+        max-width: 430px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        animation: popupHighlight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes popupHighlight {
+        0% {
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .close-button {
+        position: absolute;
+        top: -20px;
+        right: 20px;
+        background: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 2002;
+    }
+
+    .testimonial-visual-wrapper {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     .chat-bubble-container {
-        /* Scale down to fit 450px + overhangs into ~360-400px space */
-        transform: scale(0.85); 
-        transform-origin: center center;
-        margin-top: -20px; /* Pull up slightly if needed */
+        position: relative;
+        width: 450px;
+        height: 338px;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-}
 
-@media (max-width: 450px) {
-    .chat-bubble-container {
-        /* Aggressive scaling for small phones to clear swirls (Total visually ~525px -> ~350px needed) */
-        transform: scale(0.65); 
+    .custom-bubble-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.25));
     }
-    
-    .testimonial-author {
-        font-size: 1.6rem; /* Slightly adjust text readability if scale shrinks it too much visually */
+
+    .chat-bubble-text-content {
+        position: relative;
+        z-index: 6;
+        width: 450px;
+        height: 338px;
+        padding: 0px 70px;
+        padding-top: 80px;
+        /* Offset for the top tail to align text with the bulb's visual center */
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* Center vertically within the bulb area */
+        box-sizing: border-box;
+        overflow: hidden;
     }
 
     .testimonial-text {
-        font-size: 0.9rem; /* Bump base font slightly so it's readable after scale down */
+        font-family: 'Inter', sans-serif;
+        font-style: italic;
+        font-size: 0.8rem;
+        color: #333;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 20px;
+        /* Balanced spacing to author */
+        line-height: 1.25;
+        max-width: 100%;
+        word-wrap: break-word;
     }
-    
-    .close-button {
-        top: 0px; 
-        right: 15px;
-        transform: scale(0.9);
+
+    .testimonial-author {
+        font-family: 'Caveat', cursive;
+        /* Replaced var(--font-hand) */
+        font-weight: 500;
+        font-size: 1.8rem;
+        color: #1a1a1a;
+        margin: 0;
+        letter-spacing: 0.5px;
+        opacity: 0.95;
+        text-align: center;
     }
-}
+
+    .decoration-swirls {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 338px;
+        /* Match bubble container height */
+        pointer-events: none;
+        z-index: 4;
+    }
+
+    .swirl {
+        position: absolute;
+    }
+
+    .swirl-left {
+        top: 30px;
+        left: -70px;
+        transform: rotate(-10deg);
+    }
+
+    .swirl-right {
+        top: 20px;
+        right: -50px;
+        transform: rotate(-5deg);
+    }
+
+    /* Responsive Scaling for Mobile Devices */
+    @media (max-width: 600px) {
+        .testimonial-popup-content {
+            padding: 20px 10px;
+            /* Reduce padding */
+            width: 100vw;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .chat-bubble-container {
+            /* Scale down to fit 450px + overhangs into ~360-400px space */
+            transform: scale(0.85);
+            transform-origin: center center;
+            margin-top: -20px;
+            /* Pull up slightly if needed */
+        }
+    }
+
+    @media (max-width: 450px) {
+        .chat-bubble-container {
+            /* Aggressive scaling for small phones to clear swirls (Total visually ~525px -> ~350px needed) */
+            transform: scale(0.65);
+        }
+
+        .testimonial-author {
+            font-size: 1.6rem;
+            /* Slightly adjust text readability if scale shrinks it too much visually */
+        }
+
+        .testimonial-text {
+            font-size: 0.9rem;
+            /* Bump base font slightly so it's readable after scale down */
+        }
+
+        .close-button {
+            top: 0px;
+            right: 15px;
+            transform: scale(0.9);
+        }
+    }

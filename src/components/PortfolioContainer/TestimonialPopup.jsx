@@ -16,8 +16,8 @@ const TestimonialPopup = ({ onClose }) => {
                     <div className="chat-bubble-container">
                         {/* Decorative Swirls - Positioned to wrap around the bubble */}
                         <div className="decoration-swirls">
-                            <svg className="swirl swirl-left" width="220" height="300" viewBox="0 0 220 300">
-                                <path d="M180,20 C80,40 10,120 40,260" fill="none" stroke="#ffc107" strokeWidth="8" strokeLinecap="round" />
+                            <svg className="swirl swirl-left" width="250" height="280" viewBox="0 0 250 280">
+                                <path d="M190,40 C100,60 20,160 80,260" fill="none" stroke="#ffc107" strokeWidth="8" strokeLinecap="round" />
                             </svg>
                             <svg className="swirl swirl-right" width="250" height="280" viewBox="0 0 250 280">
                                 <path d="M40,30 C160,50 230,150 180,250" fill="none" stroke="#ffc107" strokeWidth="8" strokeLinecap="round" />
