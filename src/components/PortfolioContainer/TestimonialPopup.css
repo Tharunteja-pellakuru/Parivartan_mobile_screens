@@ -84,13 +84,15 @@
         align-items: center;
     }
 
-    .custom-bubble-svg {
+    /* PopCard.png image styling */
+    .pop-card-image {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.25));
+        object-fit: contain;
+        z-index: 4;
     }
 
     .chat-bubble-text-content {
@@ -100,13 +102,11 @@
         height: 338px;
         padding: 0px 70px;
         padding-top: 80px;
-        /* Offset for the top tail to align text with the bulb's visual center */
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        /* Center vertically within the bulb area */
         box-sizing: border-box;
         overflow: hidden;
     }
@@ -119,7 +119,6 @@
         padding: 0;
         margin: 0;
         margin-bottom: 20px;
-        /* Balanced spacing to author */
         line-height: 1.25;
         max-width: 100%;
         word-wrap: break-word;
@@ -127,7 +126,6 @@
 
     .testimonial-author {
         font-family: 'Caveat', cursive;
-        /* Replaced var(--font-hand) */
         font-weight: 500;
         font-size: 1.8rem;
         color: #1a1a1a;
@@ -135,33 +133,6 @@
         letter-spacing: 0.5px;
         opacity: 0.95;
         text-align: center;
-    }
-
-    .decoration-swirls {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 338px;
-        /* Match bubble container height */
-        pointer-events: none;
-        z-index: 4;
-    }
-
-    .swirl {
-        position: absolute;
-    }
-
-    .swirl-left {
-        top: 30px;
-        left: -70px;
-        transform: rotate(-10deg);
-    }
-
-    .swirl-right {
-        top: 20px;
-        right: -50px;
-        transform: rotate(-5deg);
     }
 
     /* Responsive Scaling for Mobile Devices */
