@@ -72,7 +72,14 @@ const SwipeableLayout = ({ children }) => {
   }, []);
   
   const handleTouchMove = useCallback((e) => {
-    if (!isCenteredInViewport()) return;
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    
+    // "MAGNETIC" CAPTURE: Trigger if section is mostly in view or entering firmly
+    const isReached = rect.top <= viewportHeight * 0.2 && rect.bottom >= viewportHeight * 0.8;
+    if (!isReached) return;
 
     const currentY = e.touches[0].clientY;
     const currentX = e.touches[0].clientX;
@@ -81,10 +88,10 @@ const SwipeableLayout = ({ children }) => {
 
     // Strict vertical swipe check
     if (Math.abs(deltaY) > Math.abs(deltaX)) {
-      const isSwipingUp = deltaY > 0; // Swipe finger UP = navigate forward
-      const isSwipingDown = deltaY < 0; // Swipe finger DOWN = navigate backward
+      const isSwipingUp = deltaY > 0; // Next
+      const isSwipingDown = deltaY < 0; // Prev
 
-      // LOCK scroll if we have cards anyway or if we are firmly in the zone
+      // LOCK scroll if we have cards available in that direction
       const canGoNext = isSwipingUp && currentIndexRef.current < totalCards - 1;
       const canGoPrev = isSwipingDown && currentIndexRef.current > 0;
 
@@ -111,7 +118,14 @@ const SwipeableLayout = ({ children }) => {
   }, [goToNext, goToPrev]);
   
   const handleWheel = useCallback((e) => {
-    if (!isCenteredInViewport()) return;
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    
+    // Same "MAGNETIC" capture logic as touch
+    const isReached = rect.top <= viewportHeight * 0.2 && rect.bottom >= viewportHeight * 0.8;
+    if (!isReached) return;
     
     const isScrollingDown = e.deltaY > 0;
     const isScrollingUp = e.deltaY < 0;
@@ -130,12 +144,12 @@ const SwipeableLayout = ({ children }) => {
         else goToPrev();
       }
     }
-    // If at boundaries, do not prevent default, allowing page scroll exit
   }, [goToNext, goToPrev, totalCards]);
   
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
+      // Use non-passive for wheel as well to ensure preventDefault() works
       container.addEventListener('wheel', handleWheel, { passive: false });
       container.addEventListener('touchstart', handleTouchStart, { passive: false });
       container.addEventListener('touchmove', handleTouchMove, { passive: false });

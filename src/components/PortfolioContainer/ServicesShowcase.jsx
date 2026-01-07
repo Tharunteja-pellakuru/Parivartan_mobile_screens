@@ -91,13 +91,10 @@ const ServicesShowcase = () => {
         isAnimatingRef.current = isAnimating;
     }, [isAnimating]);
 
-    // Handlers for BUTTON navigation (cycle images within current service)
+    // Handlers for BUTTON navigation (cycle images manually)
     const handleNext = useCallback(() => {
         if (isAnimatingRef.current) return;
-        
         const currentService = servicesData[activeIndexRef.current];
-        
-        // Only cycle through images within the current service, don't switch cards
         if (currentService.images) {
             setImageIndex(prev => (prev + 1) % currentService.images.length);
         }
@@ -105,10 +102,7 @@ const ServicesShowcase = () => {
 
     const handlePrev = useCallback(() => {
         if (isAnimatingRef.current) return;
-        
         const currentService = servicesData[activeIndexRef.current];
-        
-        // Only cycle through images within the current service, don't switch cards
         if (currentService.images) {
             setImageIndex(prev => {
                 const newIndex = prev - 1;
@@ -117,7 +111,7 @@ const ServicesShowcase = () => {
         }
     }, []);
     
-    // Handlers for SCROLL/SWIPE navigation (switch between service cards)
+    // Handlers for SCROLL/SWIPE navigation (sequential flow)
     const handleNextService = useCallback(() => {
         if (isAnimatingRef.current) return;
         if (activeIndexRef.current >= servicesData.length - 1) return;
@@ -126,6 +120,8 @@ const ServicesShowcase = () => {
         setPrevIndex(activeIndexRef.current);
         setIsAnimating(true);
         setActiveIndex((prev) => prev + 1);
+        // Reset image index when entering a new card
+        setImageIndex(0);
     }, []);
 
     const handlePrevService = useCallback(() => {
@@ -136,6 +132,8 @@ const ServicesShowcase = () => {
         setPrevIndex(activeIndexRef.current);
         setIsAnimating(true);
         setActiveIndex((prev) => prev - 1);
+        // Reset image index when entering a new card (start from top)
+        setImageIndex(0);
     }, []);
 
     // Animation reset timer
@@ -149,36 +147,21 @@ const ServicesShowcase = () => {
         }
     }, [isAnimating]);
     
-    // Reset image index when service changes (via scroll/swipe)
-    useEffect(() => {
-        setImageIndex(0);
-    }, [activeIndex]);
-
-    // Touch Start Handler (passive is fine here, we just need start coords)
+    // Touch Start Handler
     const handleTouchStart = (e) => {
         touchStartY.current = e.touches[0].clientY;
         touchStartX.current = e.touches[0].clientX;
     };
 
-    // The core logic for scroll locking and interaction
+    // The core logic for sequential locking and interaction
     useEffect(() => {
         const element = sectionRef.current;
         if (!element) return;
 
-        // Helper to check if component is centered in viewport
         const isCenteredInViewport = () => {
             const rect = element.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
-            const elementCenter = rect.top + rect.height / 2;
-            const viewportCenter = viewportHeight / 2;
-
-            // "Magnetic" threshold: 40% of viewport height
-            const threshold = viewportHeight * 0.4;
-
-            // Also check if element effectively covers the main interaction area
-            const coversScreen = rect.top <= viewportHeight * 0.2 && rect.bottom >= viewportHeight * 0.8;
-
-            return Math.abs(elementCenter - viewportCenter) < threshold || coversScreen;
+            return rect.top <= viewportHeight * 0.2 && rect.bottom >= viewportHeight * 0.8;
         };
 
         const handleWheelNonPassive = (e) => {
@@ -191,7 +174,7 @@ const ServicesShowcase = () => {
             const isScrollingDown = e.deltaY > 0;
             const isScrollingUp = e.deltaY < 0;
 
-            // Boundary checks for locking
+            // Boundary checks for locking (inter-card only)
             const canGoNext = isScrollingDown && currentIndex < servicesData.length - 1;
             const canGoPrev = isScrollingUp && currentIndex > 0;
 
@@ -199,13 +182,12 @@ const ServicesShowcase = () => {
                 // Firmly lock scroll within the section
                 if (e.cancelable) e.preventDefault();
 
-                // Trigger navigation if past small threshold and not already animating
+                // Navigation between cards
                 if (!isAnimatingRef.current && Math.abs(e.deltaY) > 5) {
                     if (isScrollingDown) handleNextService();
                     else handlePrevService();
                 }
             }
-            // Release to page scroll at boundaries
         };
 
         const handleTouchMoveNonPassive = (e) => {
@@ -218,8 +200,8 @@ const ServicesShowcase = () => {
 
             // Strictly vertical check
             if (Math.abs(deltaY) > Math.abs(deltaX)) {
-                const isSwipingUp = deltaY > 0; // Swipe UP = Next
-                const isSwipingDown = deltaY < 0; // Swipe DOWN = Prev
+                const isSwipingUp = deltaY > 0; // Next Card
+                const isSwipingDown = deltaY < 0; // Prev Card
                 const currentIndex = activeIndexRef.current;
 
                 const canGoNext = isSwipingUp && currentIndex < servicesData.length - 1;
@@ -236,12 +218,9 @@ const ServicesShowcase = () => {
 
             const touchEndY = e.changedTouches[0].clientY;
             const deltaY = touchStartY.current - touchEndY;
-
-            // Only trigger if we prevented default (meaning we locked it), or just purely based on logic
-            // To be safe, re-check boundaries and magnitude
-            const currentIndex = activeIndexRef.current;
             const isSwipingUp = deltaY > 0;
             const isSwipingDown = deltaY < 0;
+            const currentIndex = activeIndexRef.current;
 
             if (Math.abs(deltaY) > 40) { // Minimum swipe distance
                 if (isSwipingUp && currentIndex < servicesData.length - 1) {
