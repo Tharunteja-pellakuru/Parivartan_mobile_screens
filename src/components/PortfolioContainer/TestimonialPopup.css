@@ -52,7 +52,7 @@
 
     .close-button {
         position: absolute;
-        top: -20px;
+        top: 10px; /* Changed from -20px to prevent cutoff */
         right: 20px;
         background: white;
         border: none;
