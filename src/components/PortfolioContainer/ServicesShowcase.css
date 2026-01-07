@@ -61,10 +61,10 @@
 .showcase-content-fixed {
     position: relative;
     width: 100%;
-    min-height: 550px;
-    /* Increased to 550px to prevent button cutoff */
+    min-height: 600px; /* Increased from 550px to 600px to prevent button cutoff */
     margin-top: 5px;
     overflow: visible;
+    padding-bottom: 20px; /* Added padding to ensure button has space */
 }
 
 .service-content-wrapper {
@@ -283,7 +283,7 @@
     font-size: 14px;
     font-weight: 500;
     margin-top: 15px;
-    margin-bottom: 0px;
+    margin-bottom: 20px; /* Increased from 0px to 20px to prevent cutoff */
     cursor: pointer;
     transition: transform 0.2s;
 }
