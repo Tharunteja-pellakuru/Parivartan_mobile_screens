@@ -22,10 +22,42 @@
   display: none !important;
 }
 
+/* Fade-out gradient overlays */
+.pageContainer::before,
+.pageContainer::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px; /* Height of fade effect */
+  z-index: 5; /* Below header/footer (z-index: 10) but above background */
+  pointer-events: none; /* Allow interactions through the gradient */
+}
+
+/* Top fade - transparent to white */
+.pageContainer::before {
+  top: 0;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(255, 255, 255, 0.8) 30%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Bottom fade - transparent to white */
+.pageContainer::after {
+  bottom: 0;
+  background: linear-gradient(to top, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(255, 255, 255, 0.8) 30%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
 /* FIXED HEADER */
 .fixedHeader {
   flex-shrink: 0;
-  padding: 40px 20px 10px;
+  padding: 60px 20px 10px; /* Increased top padding from 40px to 60px */
   text-align: center;
   background: transparent;
   z-index: 10;
@@ -126,7 +158,7 @@
 /* FIXED FOOTER */
 .fixedFooter {
   flex-shrink: 0;
-  padding: 5px 20px 15px;
+  padding: 5px 20px 30px; /* Increased bottom padding from 15px to 30px */
   text-align: center;
   background: transparent;
   z-index: 10;
@@ -143,6 +175,7 @@
 
 .footerLine:last-child {
   margin-bottom: 0;
+  padding-bottom: 10px; /* Added padding below "& promote you using" line */
 }
 
 .footerText {
