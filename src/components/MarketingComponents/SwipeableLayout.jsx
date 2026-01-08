@@ -53,16 +53,15 @@ const SwipeableLayout = ({ children }) => {
     if (!containerRef.current) return false;
     const rect = containerRef.current.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const elementCenter = rect.top + rect.height / 2;
+    
+    // Calculate centers
     const viewportCenter = viewportHeight / 2;
-
-    // "Magnetic" threshold: 40% of viewport height
-    const threshold = viewportHeight * 0.4;
-
-    // Check if element is centered OR if it covers the main interaction area
-    const coversScreen = rect.top <= viewportHeight * 0.2 && rect.bottom >= viewportHeight * 0.8;
-
-    return Math.abs(elementCenter - viewportCenter) < threshold || coversScreen;
+    const componentCenter = rect.top + rect.height / 2;
+    const distanceFromCenter = Math.abs(componentCenter - viewportCenter);
+    
+    // Component is centered when within 20% of viewport height
+    const centerThreshold = viewportHeight * 0.2;
+    return distanceFromCenter < centerThreshold;
   };
 
   const handleTouchStart = useCallback((e) => {
@@ -79,9 +78,16 @@ const SwipeableLayout = ({ children }) => {
     const rect = containerRef.current.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     
-    // More lenient "MAGNETIC" CAPTURE - trigger when section is substantially visible
-    const isReached = rect.top <= viewportHeight * 0.3 && rect.bottom >= viewportHeight * 0.4;
-    if (!isReached) return;
+    // Calculate centers
+    const viewportCenter = viewportHeight / 2;
+    const componentCenter = rect.top + rect.height / 2;
+    const distanceFromCenter = Math.abs(componentCenter - viewportCenter);
+    
+    // Only capture when component is centered (within 20% of viewport height)
+    const centerThreshold = viewportHeight * 0.2;
+    const isCentered = distanceFromCenter < centerThreshold;
+    
+    if (!isCentered) return;
 
     const currentY = e.touches[0].clientY;  
     const currentX = e.touches[0].clientX;
@@ -146,9 +152,16 @@ const SwipeableLayout = ({ children }) => {
     const rect = containerRef.current.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     
-    // Same lenient "MAGNETIC" capture logic as touch
-    const isReached = rect.top <= viewportHeight * 0.3 && rect.bottom >= viewportHeight * 0.4;
-    if (!isReached) return;
+    // Calculate centers
+    const viewportCenter = viewportHeight / 2;
+    const componentCenter = rect.top + rect.height / 2;
+    const distanceFromCenter = Math.abs(componentCenter - viewportCenter);
+    
+    // Only capture when component is centered (within 20% of viewport height)
+    const centerThreshold = viewportHeight * 0.2;
+    const isCentered = distanceFromCenter < centerThreshold;
+    
+    if (!isCentered) return;
     
     const isScrollingDown = e.deltaY > 0;
     const isScrollingUp = e.deltaY < 0;
