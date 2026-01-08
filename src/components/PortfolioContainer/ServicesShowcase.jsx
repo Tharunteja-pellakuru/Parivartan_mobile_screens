@@ -25,7 +25,7 @@ const servicesData = [
         ],
         logo: andhraLogoV2,
         logoAlt: 'Andhra Canteen Logo',
-        pill: 'in-store branding  •  print collateral  •  menu designs  •  website',
+        pill: 'Brand identity · print collateral · in-store branding · digital assets',
         type: 'gallery'
     },
     {
@@ -73,12 +73,13 @@ const ServicesShowcase = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [imageIndex, setImageIndex] = useState(0); // Track current image within service
 
-    // Refs for state access inside event listeners
+    // Interaction Refs
     const activeIndexRef = useRef(0);
     const isAnimatingRef = useRef(false);
     const sectionRef = useRef(null);
     const wheelDeltaAccumulatorRef = useRef(0);
     const lastInteractionTimeRef = useRef(0);
+    const isLockedRef = useRef(false);
 
     // Touch tracking
     const touchStartY = useRef(0);
@@ -93,13 +94,10 @@ const ServicesShowcase = () => {
         isAnimatingRef.current = isAnimating;
     }, [isAnimating]);
 
-    // Handlers for BUTTON navigation (cycle images within current service)
+    // Handlers for BUTTON navigation (cycle images manually)
     const handleNext = useCallback(() => {
         if (isAnimatingRef.current) return;
-
         const currentService = servicesData[activeIndexRef.current];
-
-        // Only cycle through images within the current service, don't switch cards
         if (currentService.images) {
             setImageIndex(prev => (prev + 1) % currentService.images.length);
         }
@@ -107,10 +105,7 @@ const ServicesShowcase = () => {
 
     const handlePrev = useCallback(() => {
         if (isAnimatingRef.current) return;
-
         const currentService = servicesData[activeIndexRef.current];
-
-        // Only cycle through images within the current service, don't switch cards
         if (currentService.images) {
             setImageIndex(prev => {
                 const newIndex = prev - 1;
@@ -119,7 +114,7 @@ const ServicesShowcase = () => {
         }
     }, []);
 
-    // Handlers for SCROLL/SWIPE navigation (switch between service cards)
+    // Handlers for SCROLL/SWIPE navigation (sequential flow)
     const handleNextService = useCallback(() => {
         const now = Date.now();
         if (isAnimatingRef.current || (now - lastInteractionTimeRef.current < 800)) return;
@@ -132,6 +127,8 @@ const ServicesShowcase = () => {
         setPrevIndex(activeIndexRef.current - 1);
         setIsAnimating(true);
         setActiveIndex((prev) => prev + 1);
+        // Reset image index when entering a new card
+        setImageIndex(0);
     }, []);
 
     const handlePrevService = useCallback(() => {
@@ -146,6 +143,8 @@ const ServicesShowcase = () => {
         setPrevIndex(activeIndexRef.current + 1);
         setIsAnimating(true);
         setActiveIndex((prev) => prev - 1);
+        // Reset image index when entering a new card (start from top)
+        setImageIndex(0);
     }, []);
 
     // Animation reset timer
@@ -160,20 +159,13 @@ const ServicesShowcase = () => {
         }
     }, [isAnimating]);
 
-    // Reset image index when service changes (via scroll/swipe)
-    useEffect(() => {
-        setImageIndex(0);
-    }, [activeIndex]);
-
-    // Touch Start Handler (passive is fine here, we just need start coords)
+    // Touch Start Handler
     const handleTouchStart = (e) => {
         touchStartY.current = e.touches[0].clientY;
         touchStartX.current = e.touches[0].clientX;
     };
 
-    const isLockedRef = useRef(false);
-
-    // Intersection Observer for Locking
+    // The core logic for sequential locking and interaction
     useEffect(() => {
         const element = sectionRef.current;
         if (!element) return;
@@ -186,8 +178,6 @@ const ServicesShowcase = () => {
                 // Direction-aware entry: Set index if we just locked
                 if (entry.isIntersecting && !wasLocked) {
                     const rect = entry.boundingClientRect;
-
-                    // Reset accumulator
                     wheelDeltaAccumulatorRef.current = 0;
 
                     // If the element's top is < -50, it's entering from bottom
@@ -220,7 +210,6 @@ const ServicesShowcase = () => {
             const isCoolingDown = (now - lastInteractionTimeRef.current) < 800;
 
             if (isAnimatingRef.current || isCoolingDown) {
-                // While animating or cooling down, strictly block and discard
                 if (e.cancelable) e.preventDefault();
                 wheelDeltaAccumulatorRef.current = 0;
                 return;
@@ -230,7 +219,7 @@ const ServicesShowcase = () => {
             const isScrollingDown = e.deltaY > 0;
             const isScrollingUp = e.deltaY < 0;
 
-            // Handle Page Scroll Release at Boundaries (with a tiny threshold to prevent accidental jump)
+            // Handle Page Scroll Release at Boundaries
             const atBottomBoundary = currentIndex === servicesData.length - 1 && isScrollingDown;
             const atTopBoundary = currentIndex === 0 && isScrollingUp;
 
@@ -241,18 +230,16 @@ const ServicesShowcase = () => {
 
             // Lock and step
             if (e.cancelable) e.preventDefault();
-
-            // Accumulate wheel delta
             wheelDeltaAccumulatorRef.current += e.deltaY;
 
-            // Higher threshold (50) for the initial "flick" to ensure intentionality
+            // Higher intentionality threshold
             if (Math.abs(wheelDeltaAccumulatorRef.current) >= 50) {
                 if (wheelDeltaAccumulatorRef.current > 0) {
                     handleNextService();
                 } else {
                     handlePrevService();
                 }
-                wheelDeltaAccumulatorRef.current = 0; // Reset immediately after triggering
+                wheelDeltaAccumulatorRef.current = 0;
             }
         };
 
@@ -269,7 +256,7 @@ const ServicesShowcase = () => {
         const deltaY = touchStartY.current - touchY;
         const deltaX = touchStartX.current - touchX;
 
-        // Directional Locking: Only care if mostly vertical swipe
+        // Directional Locking: Mostly vertical swipe
         if (Math.abs(deltaY) < Math.abs(deltaX) || Math.abs(deltaY) < 5) return;
 
         const currentIndex = activeIndexRef.current;
@@ -302,7 +289,7 @@ const ServicesShowcase = () => {
         }
     };
 
-    // The core logic for scroll locking and interaction (Legacy effect removed)
+    // Attach touch move/end specifically to the section with proper options
     useEffect(() => {
         const element = sectionRef.current;
         if (!element) return;
@@ -327,9 +314,9 @@ const ServicesShowcase = () => {
         >
             <div className="services-header-fixed">
                 <h2 className="services-title">
-                    <span className="title-line">while delivering</span>
+                    <span className="title-line">Growth driven by</span>
                     <span className="title-line highlighted">
-                        outstanding branding
+                        data, not guesswork
                         <svg className="header-underline" width="198" height="26" viewBox="0 0 198 26" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                             <path d="M0.752181 24.3648C24.2033 10.7729 96.3954 -10.9965 197.555 10.6615" stroke="#73BF44" strokeWidth="3" />
                         </svg>

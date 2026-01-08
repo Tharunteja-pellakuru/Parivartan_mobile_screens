@@ -124,8 +124,10 @@
 .underlineImage {
   position: absolute;
   bottom: -20px;
-  left: -5%;
-  width: 75%;
+  left: 30%;
+  /* Adjusted from -5% for better alignment with 'your' */
+  width: 50%;
+  /* Adjusted from 75% */
   height: 26px;
   z-index: -1;
   pointer-events: none;
@@ -147,8 +149,8 @@
   position: relative;
   overflow: visible;
   /* Prevent any clipping of shadows or curves */
-  touch-action: pan-y;
-  /* Changed from none to allow browser boundary release */
+  touch-action: none;
+  /* Allow JS to handle all touch gestures */
   -webkit-user-select: none;
   user-select: none;
 }

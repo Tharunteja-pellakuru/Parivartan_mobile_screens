@@ -20,12 +20,7 @@ const TestimonialPopup = ({ onClose }) => {
 
                         <div className="chat-bubble-text-content">
                             <p className="testimonial-text">
-                                Our collaboration with eparivartan has been
-                                nothing short of remarkable. Over the past six
-                                months, we have witnessed a significant
-                                enhancement in our branding efforts, a
-                                testament to the dedication and expertise of
-                                the eparivartan team.
+Our collaboration with eparivartan has been nothing short of remarkable. Over the past six months, we have witnessed a significant enhancement in our branding efforts, a testament to the dedication and expertise of the eparivartan team.
                             </p>
                             <p className="testimonial-author">
                                 Sanjay Kommera - CEO

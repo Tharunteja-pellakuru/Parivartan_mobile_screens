@@ -200,11 +200,21 @@
 
 .socialIcon {
   color: #1a1a1a;
-  transition: color 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .socialIcon:hover {
-  color: #6fb633;
+  transform: translateY(-3px);
+  filter: brightness(0) saturate(100%) invert(67%) sepia(36%) codes(449deg) saturate(541%) hue-rotate(54deg) brightness(92%) contrast(89%); /* Approx #6fb633 */
+}
+
+.socialImage {
+  height: 24px;
+  width: auto;
+  display: block;
 }
 
 @media (min-width: 768px) {

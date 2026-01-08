@@ -10,31 +10,56 @@ export const useCarouselScroll = (sensitivity = 0.15) => {
   const isDragging = useRef(false);
   const lastTouchX = useRef(0);
   const lastTouchY = useRef(0);
+  const initialTouchX = useRef(0);
+  const initialTouchY = useRef(0);
+  const swipeDirection = useRef(null); // 'horizontal', 'vertical', or null
 
   const handleTouchStart = (e) => {
     isDragging.current = true;
-    lastTouchX.current = e.touches[0].clientX;
-    lastTouchY.current = e.touches[0].clientY;
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+    lastTouchX.current = touchX;
+    lastTouchY.current = touchY;
+    initialTouchX.current = touchX;
+    initialTouchY.current = touchY;
+    swipeDirection.current = null; // Reset direction on new touch
   };
 
   const handleTouchMove = (e) => {
     if (!isDragging.current) return;
+    
     const currentX = e.touches[0].clientX;
     const currentY = e.touches[0].clientY;
-    const deltaX = currentX - lastTouchX.current;
-    const deltaY = currentY - lastTouchY.current;
     
-    // Determine if the gesture is horizontal
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 2) {
+    // Calculate total movement from initial touch
+    const totalDeltaX = Math.abs(currentX - initialTouchX.current);
+    const totalDeltaY = Math.abs(currentY - initialTouchY.current);
+    
+    // Determine swipe direction on first significant movement
+    if (swipeDirection.current === null && (totalDeltaX > 10 || totalDeltaY > 10)) {
+      if (totalDeltaX > totalDeltaY * 1.5) {
+        swipeDirection.current = 'horizontal';
+      } else if (totalDeltaY > totalDeltaX * 1.5) {
+        swipeDirection.current = 'vertical';
+      }
+    }
+    
+    // Only handle horizontal swipes
+    if (swipeDirection.current === 'horizontal') {
+      const deltaX = currentX - lastTouchX.current;
       if (e.cancelable) e.preventDefault();
       setScrollProgress((prev) => prev - deltaX * sensitivity);
       lastTouchX.current = currentX;
       lastTouchY.current = currentY;
+    } else if (swipeDirection.current === 'vertical') {
+      // Let vertical swipes pass through to parent - don't prevent default
+      isDragging.current = false;
     }
   };
 
   const handleTouchEnd = () => {
     isDragging.current = false;
+    swipeDirection.current = null;
   };
 
   /**

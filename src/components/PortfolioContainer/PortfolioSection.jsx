@@ -31,7 +31,7 @@ const PortfolioSection = () => {
     return (
         <div className="portfolio-section">
             <p className="portfolio-description">
-                We craft responsive, SEO-optimized websites that empower business transform their online presence.
+                We design responsive, SEO-ready websites that form strong digital foundations, are aligned with business goals, are built for performance, and are ready to evolve as you grow.
             </p>
 
             <div className="mobile-showcase-wrapper" onClick={() => setIsPopupOpen(true)} style={{ cursor: 'pointer' }}>

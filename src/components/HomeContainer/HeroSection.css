@@ -21,7 +21,7 @@
 
 .hero-title {
     width: 100%;
-    max-width: 309px;
+    max-width: 450px; /* Increased from 309px */
     color: #000;
     text-align: center;
     font-family: 'Caveat', cursive;
@@ -48,8 +48,8 @@
 .underline-svg {
     position: absolute;
     bottom: -16px;
-    left: -10%;
-    width: 85%;
+    left: 20%; /* Adjusted from -10% for better alignment with 'that' */
+    width: 60%; /* Adjusted from 85% */
     height: 26px;
     z-index: -1;
     pointer-events: none;
