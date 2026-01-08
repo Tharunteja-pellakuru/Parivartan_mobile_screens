@@ -27,6 +27,8 @@
     /* Ensure it has its own space but stays pinned to bottom */
     height: 100vh;
     height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
 }
 
 .portfolio-hero-title {

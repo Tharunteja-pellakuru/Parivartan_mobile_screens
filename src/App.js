@@ -6,7 +6,7 @@ import { WhyChooseUs } from './components/WhyChooseUs/WhyChooseUs';
 import { FAQ } from './components/FAQ/FAQ';
 import Testimonials from './components/Testimonials/Testimonials';
 import ContactFooter from './components/ContactFooter/ContactFooter';
-import BottomNav from './components/BottomNav/BottomNav';
+// import BottomNav from './components/BottomNav/BottomNav';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
       <FAQ />
       <Testimonials />
       <ContactFooter />
-      <BottomNav />
+      {/* <BottomNav /> */}
     </div>
   );
 }
