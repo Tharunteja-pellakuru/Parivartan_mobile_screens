@@ -210,6 +210,7 @@ const SwipeableLayout = ({ children }) => {
   }, [totalCards]);
 
   const handleTouchEnd = useCallback(() => {
+
     if (swipeDirectionRef.current === 'vertical') {
       const swipeDistance = touchStartY.current - touchEndY.current;
       if (Math.abs(swipeDistance) > minSwipeDistance) {

@@ -87,12 +87,12 @@
     }
 
     45% {
-        transform: translateY(calc(-100% + 400px));
+        transform: translateY(calc(-100% + var(--viewport-height, 400px)));
     }
 
     /* Scroll to bottom */
     55% {
-        transform: translateY(calc(-100% + 400px));
+        transform: translateY(calc(-100% + var(--viewport-height, 400px)));
     }
 
     /* Pause at bottom */
@@ -117,7 +117,7 @@
 .arrow-btn {
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 3rem;
     color: #333;
     cursor: pointer;
 }
@@ -253,4 +253,29 @@
 
 .blob-right::before {
     display: none;
+}
+
+/* Tablet Responsiveness */
+@media (min-width: 768px) {
+    .mobile-device-frame {
+        width: 320px;
+        /* Larger on tablets */
+    }
+
+    .nav-arrows {
+        max-width: 360px;
+        /* Align with larger frame */
+    }
+}
+
+/* Desktop Responsiveness */
+@media (min-width: 1024px) {
+    .mobile-device-frame {
+        width: 380px;
+        /* Full size for desktop/landscape tablet */
+    }
+
+    .nav-arrows {
+        max-width: 420px;
+    }
 }

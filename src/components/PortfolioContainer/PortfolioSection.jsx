@@ -2,27 +2,53 @@ import React, { useState } from 'react';
 import './PortfolioSection.css';
 import mobileMockup from '../../assets/images/Mobile.png';
 import mobileScrollImage from '../../assets/images/MobileImage.png';
-import image2 from '../../assets/images/image2.png';
-import image3 from '../../assets/images/image3.png';
+import esticMobile from '../../assets/images/EsticMobile.png';
+import heritageValleyMobile from '../../assets/images/HeritageValleyMobile.png';
 import accel1LogoV2 from '../../assets/images/accel1-logo-v2.png';
 import TestimonialPopup from './TestimonialPopup';
 import html5Logo from '../../assets/images/html5-logo.png';
 import pythonLogo from '../../assets/images/python-logo.png';
 import reactLogo from '../../assets/images/react-logo.png';
 
+import logo1 from '../../assets/images/logo_1.svg';
+import logo2 from '../../assets/images/logo_2.svg';
+
 const PortfolioSection = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    
+    const screenRef = React.useRef(null);
+
+    React.useEffect(() => {
+        const updateHeight = () => {
+            if (screenRef.current) {
+                const height = screenRef.current.offsetHeight;
+                screenRef.current.style.setProperty('--viewport-height', `${height}px`);
+                // Assume safe bottom padding or use image aspect ratio logic if needed.
+                // For now, simpler: Scroll extent = Image Height - Viewport Height
+                // But we don't know image height easily without loading it. 
+                // Alternatively, assume the animation target is proportional.
+            }
+        };
+
+        const observer = new ResizeObserver(updateHeight);
+        if (screenRef.current) {
+            observer.observe(screenRef.current);
+            updateHeight();
+        }
+
+        return () => observer.disconnect();
+    }, []);
+
     // Array of images to cycle through
-    const portfolioImages = [mobileScrollImage, image2, image3];
-    
+    const portfolioImages = [mobileScrollImage, esticMobile, heritageValleyMobile];
+    const portfolioLogos = [accel1LogoV2, logo1, logo2];
+
     // Navigation handlers
     const handlePrevious = (e) => {
         e.stopPropagation(); // Prevent popup from opening
         setCurrentImageIndex((prev) => (prev - 1 + portfolioImages.length) % portfolioImages.length);
     };
-    
+
     const handleNext = (e) => {
         e.stopPropagation(); // Prevent popup from opening
         setCurrentImageIndex((prev) => (prev + 1) % portfolioImages.length);
@@ -37,15 +63,20 @@ const PortfolioSection = () => {
             <div className="mobile-showcase-wrapper" onClick={() => setIsPopupOpen(true)} style={{ cursor: 'pointer' }}>
                 <div className="mobile-device-frame">
                     <img src={mobileMockup} alt="Mobile Frame" className="mobile-frame-img" />
-                    <div className="mobile-screen-content">
-                        <img src={portfolioImages[currentImageIndex]} alt="Project Screen" className="mobile-scroll-image" />
+                    <div className="mobile-screen-content" ref={screenRef}>
+                        <img
+                            key={currentImageIndex}
+                            src={portfolioImages[currentImageIndex]}
+                            alt="Project Screen"
+                            className="mobile-scroll-image"
+                        />
                     </div>
                 </div>
 
                 <div className="nav-arrows">
                     <button className="arrow-btn" onClick={handlePrevious}>‹</button>
                     <span className="company-name">
-                        <img src={accel1LogoV2} alt="ACCEL1" className="company-logo" />
+                        <img src={portfolioLogos[currentImageIndex]} alt="Company Logo" className="company-logo" />
                     </span>
                     <button className="arrow-btn" onClick={handleNext}>›</button>
                 </div>
