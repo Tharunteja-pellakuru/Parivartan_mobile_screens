@@ -3,7 +3,6 @@ import styles from './SwipeableLayout.module.css';
 import { InstagramIcon, FacebookIcon, GoogleAdsIcon, MetaIcon } from '../common/Icons';
 
 // Import assets
-import underlineStroke from '../../assets/Vector76.svg';
 import emailMarketingLogo from '../../assets/logos/Email Marketing.png';
 
 const SwipeableLayout = ({ children }) => {
@@ -21,6 +20,7 @@ const SwipeableLayout = ({ children }) => {
   const isTransitioningRef = useRef(false);
   const wheelDeltaAccumulatorRef = useRef(0);
   const lastInteractionTimeRef = useRef(0);
+  const lastBoundaryTimeRef = useRef(0); // For absorbing boundary inertia
   const swipeDirectionRef = useRef(null); // Track vertical vs horizontal swipes
 
   // Sync refs with state
@@ -68,44 +68,63 @@ const SwipeableLayout = ({ children }) => {
 
   const isLockedRef = useRef(false);
 
-  // Wheel Scroll Handler
+  // Wheel Scroll Handler - The Core of the "Hard Lock"
   useEffect(() => {
     const onScroll = (e) => {
       if (!isLockedRef.current) return;
 
       const now = Date.now();
       const isCoolingDown = (now - lastInteractionTimeRef.current) < 800;
-
-      if (isTransitioningRef.current || isCoolingDown) {
-        if (e.cancelable) e.preventDefault();
-        wheelDeltaAccumulatorRef.current = 0;
-        return;
-      }
+      const isBoundarySettle = (now - lastBoundaryTimeRef.current) < 300;
 
       const currentIndex = currentIndexRef.current;
       const isScrollingDown = e.deltaY > 0;
       const isScrollingUp = e.deltaY < 0;
 
-      // Handle Page Scroll Release at Boundaries
+      // Handle Page Scroll Release at Boundaries with "Settle" logic
       const atBottomBoundary = currentIndex === totalCards - 1 && isScrollingDown;
       const atTopBoundary = currentIndex === 0 && isScrollingUp;
 
       if (atBottomBoundary || atTopBoundary) {
+        // If we just hit the boundary, keep the lock for 300ms to absorb inertia
+        if (isBoundarySettle) {
+          if (e.cancelable) e.preventDefault();
+          return;
+        }
         wheelDeltaAccumulatorRef.current = 0;
-        return; // Allow natural page scroll
+        return; // Allow natural page scroll after settle
       }
 
-      // Inside showcase: block page scroll and run step logic
+      // If we are NOT at a boundary, we MUST block the page scroll strictly
       if (e.cancelable) e.preventDefault();
+
+      if (isTransitioningRef.current || isCoolingDown) {
+        wheelDeltaAccumulatorRef.current = 0;
+        return;
+      }
+
+      // 1. Reset accumulator if scroll direction changed (Sign change check)
+      if (wheelDeltaAccumulatorRef.current !== 0 && Math.sign(e.deltaY) !== Math.sign(wheelDeltaAccumulatorRef.current)) {
+        wheelDeltaAccumulatorRef.current = 0;
+      }
+
+      // 2. Accumulate delta
       wheelDeltaAccumulatorRef.current += e.deltaY;
 
-      // Higher intentionality threshold
+      // 3. One deliberate step per gesture
       if (Math.abs(wheelDeltaAccumulatorRef.current) >= 50) {
         if (wheelDeltaAccumulatorRef.current > 0) {
           goToNext();
         } else {
           goToPrev();
         }
+
+        // If we just landed on a boundary card, start the settle timer
+        const newIndex = currentIndexRef.current;
+        if (newIndex === 0 || newIndex === totalCards - 1) {
+          lastBoundaryTimeRef.current = Date.now();
+        }
+
         wheelDeltaAccumulatorRef.current = 0;
       }
     };
@@ -114,7 +133,7 @@ const SwipeableLayout = ({ children }) => {
     return () => window.removeEventListener('wheel', onScroll);
   }, [goToNext, goToPrev, totalCards]);
 
-  // Intersection Observer for Locking
+  // Intersection Observer for Locking with wider margin
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -123,12 +142,12 @@ const SwipeableLayout = ({ children }) => {
         const wasLocked = isLockedRef.current;
         isLockedRef.current = entry.isIntersecting;
 
-        // Reset state on entry
         if (entry.isIntersecting && !wasLocked) {
           const rect = entry.boundingClientRect;
           wheelDeltaAccumulatorRef.current = 0;
+          lastBoundaryTimeRef.current = 0; // Reset boundary settle on entry
 
-          // Direction-aware entry
+          // Direction-aware initialization
           if (rect.top < -50) {
             setCurrentIndex(totalCards - 1);
             currentIndexRef.current = totalCards - 1;
@@ -139,8 +158,8 @@ const SwipeableLayout = ({ children }) => {
         }
       },
       {
-        threshold: 0.8,
-        rootMargin: "-5% 0px -5% 0px"
+        threshold: 0,
+        rootMargin: "-40% 0px -40% 0px" // Robustly detects when component "crosses" screen center
       }
     );
 
@@ -148,7 +167,7 @@ const SwipeableLayout = ({ children }) => {
     return () => observer.disconnect();
   }, [totalCards]);
 
-  // Touch Handlers
+  // Touch Handlers - Re-implemented for Hard Lock
   const handleTouchStart = useCallback((e) => {
     touchStartY.current = e.touches[0].clientY;
     touchStartX.current = e.touches[0].clientX;
@@ -158,33 +177,31 @@ const SwipeableLayout = ({ children }) => {
   }, []);
 
   const handleTouchMove = useCallback((e) => {
-    if (!isLockedRef.current || isTransitioningRef.current) return;
+    if (!isLockedRef.current) return;
 
     const currentY = e.touches[0].clientY;
     const currentX = e.touches[0].clientX;
-    const totalDeltaY = Math.abs(touchStartY.current - currentY);
-    const totalDeltaX = Math.abs(touchStartX.current - currentX);
+    const totalDeltaY = touchStartY.current - currentY;
+    const totalDeltaX = touchStartX.current - currentX;
 
-    // Filter for intentional swipes
-    if (swipeDirectionRef.current === null && (totalDeltaY > 8 || totalDeltaX > 8)) {
-      if (totalDeltaY > totalDeltaX * 1.2) {
-        swipeDirectionRef.current = 'vertical';
-      } else {
-        swipeDirectionRef.current = 'horizontal';
-      }
+    // Filter for vertical swipes early
+    if (swipeDirectionRef.current === null && (Math.abs(totalDeltaY) > 8 || Math.abs(totalDeltaX) > 8)) {
+      swipeDirectionRef.current = Math.abs(totalDeltaY) > Math.abs(totalDeltaX) ? 'vertical' : 'horizontal';
     }
 
     if (swipeDirectionRef.current === 'vertical') {
-      const deltaY = touchStartY.current - currentY;
-      const isSwipingUp = deltaY > 0; // Going to next
-      const isSwipingDown = deltaY < 0; // Going to prev
+      const isSwipingUp = totalDeltaY > 0; // Next
+      const isSwipingDown = totalDeltaY < 0; // Prev
+      const currentIndex = currentIndexRef.current;
 
-      const atFirstCard = currentIndexRef.current === 0;
-      const atLastCard = currentIndexRef.current === totalCards - 1;
+      const atBoundary = (isSwipingUp && currentIndex === totalCards - 1) || (isSwipingDown && currentIndex === 0);
 
-      // Only block page scroll if we have cards in that direction
-      if ((isSwipingUp && !atLastCard) || (isSwipingDown && !atFirstCard)) {
+      if (!atBoundary) {
+        // Firmly track and block native scroll while inside the showcase
         if (e.cancelable) e.preventDefault();
+      } else {
+        // Boundary behavior: can we release? 
+        // For touch, we usually allow the browser to take over once boundary is hit for a better feel
       }
     }
 

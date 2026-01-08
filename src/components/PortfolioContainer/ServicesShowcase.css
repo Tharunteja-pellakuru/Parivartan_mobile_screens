@@ -9,7 +9,8 @@
     overflow: hidden;
     min-height: auto;
     background: #fff;
-    /* touch-action cleared to allow JS handling */
+    touch-action: none;
+    /* Allow JS to handle all touch gestures */
 }
 
 .services-header-fixed {
@@ -39,8 +40,10 @@
 .header-underline {
     position: absolute;
     bottom: -16px;
-    left: 20%; /* Adjusted from 34% for better alignment */
-    width: 65%; /* Adjusted from 72% */
+    left: 20%;
+    /* Adjusted from 34% for better alignment */
+    width: 65%;
+    /* Adjusted from 72% */
     height: 26px;
     z-index: -1;
     pointer-events: none;

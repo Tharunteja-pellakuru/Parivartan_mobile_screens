@@ -79,6 +79,7 @@ const ServicesShowcase = () => {
     const sectionRef = useRef(null);
     const wheelDeltaAccumulatorRef = useRef(0);
     const lastInteractionTimeRef = useRef(0);
+    const lastBoundaryTimeRef = useRef(0); // For absorbing boundary inertia
     const isLockedRef = useRef(false);
 
     // Touch tracking
@@ -127,7 +128,6 @@ const ServicesShowcase = () => {
         setPrevIndex(activeIndexRef.current - 1);
         setIsAnimating(true);
         setActiveIndex((prev) => prev + 1);
-        // Reset image index when entering a new card
         setImageIndex(0);
     }, []);
 
@@ -143,7 +143,6 @@ const ServicesShowcase = () => {
         setPrevIndex(activeIndexRef.current + 1);
         setIsAnimating(true);
         setActiveIndex((prev) => prev - 1);
-        // Reset image index when entering a new card (start from top)
         setImageIndex(0);
     }, []);
 
@@ -160,10 +159,10 @@ const ServicesShowcase = () => {
     }, [isAnimating]);
 
     // Touch Start Handler
-    const handleTouchStart = (e) => {
+    const handleTouchStart = useCallback((e) => {
         touchStartY.current = e.touches[0].clientY;
         touchStartX.current = e.touches[0].clientX;
-    };
+    }, []);
 
     // The core logic for sequential locking and interaction
     useEffect(() => {
@@ -175,12 +174,12 @@ const ServicesShowcase = () => {
                 const wasLocked = isLockedRef.current;
                 isLockedRef.current = entry.isIntersecting;
 
-                // Direction-aware entry: Set index if we just locked
                 if (entry.isIntersecting && !wasLocked) {
                     const rect = entry.boundingClientRect;
                     wheelDeltaAccumulatorRef.current = 0;
+                    lastBoundaryTimeRef.current = 0;
 
-                    // If the element's top is < -50, it's entering from bottom
+                    // Direction-aware entry
                     if (rect.top < -50) {
                         const lastIndex = servicesData.length - 1;
                         setActiveIndex(lastIndex);
@@ -192,8 +191,8 @@ const ServicesShowcase = () => {
                 }
             },
             {
-                threshold: 0.8,
-                rootMargin: "-5% 0px -5% 0px"
+                threshold: 0,
+                rootMargin: "-40% 0px -40% 0px" // Robustly detects when component "crosses" screen center
             }
         );
 
@@ -201,44 +200,60 @@ const ServicesShowcase = () => {
         return () => observer.disconnect();
     }, []);
 
-    // Window level wheel listener
+    // Window level wheel listener - Hard Lock Logic
     useEffect(() => {
         const onScroll = (e) => {
             if (!isLockedRef.current) return;
 
             const now = Date.now();
             const isCoolingDown = (now - lastInteractionTimeRef.current) < 800;
-
-            if (isAnimatingRef.current || isCoolingDown) {
-                if (e.cancelable) e.preventDefault();
-                wheelDeltaAccumulatorRef.current = 0;
-                return;
-            }
+            const isBoundarySettle = (now - lastBoundaryTimeRef.current) < 300;
 
             const currentIndex = activeIndexRef.current;
             const isScrollingDown = e.deltaY > 0;
             const isScrollingUp = e.deltaY < 0;
 
-            // Handle Page Scroll Release at Boundaries
+            // Handle Page Scroll Release at Boundaries with settle
             const atBottomBoundary = currentIndex === servicesData.length - 1 && isScrollingDown;
             const atTopBoundary = currentIndex === 0 && isScrollingUp;
 
             if (atBottomBoundary || atTopBoundary) {
+                if (isBoundarySettle) {
+                    if (e.cancelable) e.preventDefault();
+                    return;
+                }
                 wheelDeltaAccumulatorRef.current = 0;
-                return; // Let the page scroll naturally
+                return; // Natural page scroll
             }
 
-            // Lock and step
+            // Strictly block native scroll inside showcase
             if (e.cancelable) e.preventDefault();
+
+            if (isAnimatingRef.current || isCoolingDown) {
+                wheelDeltaAccumulatorRef.current = 0;
+                return;
+            }
+
+            // Reset on sign change
+            if (wheelDeltaAccumulatorRef.current !== 0 && Math.sign(e.deltaY) !== Math.sign(wheelDeltaAccumulatorRef.current)) {
+                wheelDeltaAccumulatorRef.current = 0;
+            }
+
             wheelDeltaAccumulatorRef.current += e.deltaY;
 
-            // Higher intentionality threshold
+            // Step transition
             if (Math.abs(wheelDeltaAccumulatorRef.current) >= 50) {
                 if (wheelDeltaAccumulatorRef.current > 0) {
                     handleNextService();
                 } else {
                     handlePrevService();
                 }
+
+                const newIndex = activeIndexRef.current;
+                if (newIndex === 0 || newIndex === servicesData.length - 1) {
+                    lastBoundaryTimeRef.current = Date.now();
+                }
+
                 wheelDeltaAccumulatorRef.current = 0;
             }
         };
@@ -247,47 +262,45 @@ const ServicesShowcase = () => {
         return () => window.removeEventListener('wheel', onScroll);
     }, [handleNextService, handlePrevService]);
 
-    // Touch Move Handler for scroll locking
-    const handleTouchMove = (e) => {
-        if (!isLockedRef.current || isAnimatingRef.current) return;
+    // Touch Move Handler for hard locking
+    const handleTouchMove = useCallback((e) => {
+        if (!isLockedRef.current) return;
 
         const touchY = e.touches[0].clientY;
         const touchX = e.touches[0].clientX;
         const deltaY = touchStartY.current - touchY;
         const deltaX = touchStartX.current - touchX;
 
-        // Directional Locking: Mostly vertical swipe
+        // Vertical focus
         if (Math.abs(deltaY) < Math.abs(deltaX) || Math.abs(deltaY) < 5) return;
 
         const currentIndex = activeIndexRef.current;
         const isSwipingUp = deltaY > 0;
         const isSwipingDown = deltaY < 0;
 
-        // Boundary Checks for Release
-        const atBottomBoundary = currentIndex === servicesData.length - 1 && isSwipingUp;
-        const atTopBoundary = currentIndex === 0 && isSwipingDown;
+        const atBoundary = (isSwipingUp && currentIndex === servicesData.length - 1) || (isSwipingDown && currentIndex === 0);
 
-        if (!atBottomBoundary && !atTopBoundary) {
+        if (!atBoundary) {
             if (e.cancelable) e.preventDefault();
         }
-    };
+    }, []);
 
     // Touch End Handler for triggering service change
-    const handleTouchEnd = (e) => {
+    const handleTouchEnd = useCallback((e) => {
         if (!isLockedRef.current || isAnimatingRef.current) return;
 
         const touchEndY = e.changedTouches[0].clientY;
         const deltaY = touchStartY.current - touchEndY;
         const currentIndex = activeIndexRef.current;
 
-        if (Math.abs(deltaY) > 40) { // Minimum swipe distance
+        if (Math.abs(deltaY) > 40) { // Min swipe distance
             if (deltaY > 0 && currentIndex < servicesData.length - 1) {
                 handleNextService();
             } else if (deltaY < 0 && currentIndex > 0) {
                 handlePrevService();
             }
         }
-    };
+    }, [handleNextService, handlePrevService]);
 
     // Attach touch move/end specifically to the section with proper options
     useEffect(() => {
@@ -301,7 +314,7 @@ const ServicesShowcase = () => {
             element.removeEventListener('touchmove', handleTouchMove);
             element.removeEventListener('touchend', handleTouchEnd);
         };
-    }, [handleNextService, handlePrevService]);
+    }, [handleTouchMove, handleTouchEnd]);
 
     const currentService = servicesData[activeIndex];
     const previousService = prevIndex !== null ? servicesData[prevIndex] : null;

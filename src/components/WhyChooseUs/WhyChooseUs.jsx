@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './WhyChooseUs.module.css';
-import underlineStroke from '../../assets/Vector76.svg';
 
 export const WhyChooseUs = () => {
   const points = [
@@ -17,7 +16,7 @@ export const WhyChooseUs = () => {
           Why businesses choose <span className={styles.brandName}>
             eParivartan
             <svg className={styles.underlineSvg} width="220" height="24" viewBox="0 0 222 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 20C65 5 156 0 220 16" stroke="#83C341" strokeWidth="4" strokeLinecap="round"/>
+              <path d="M2 20C65 5 156 0 220 16" stroke="#83C341" strokeWidth="4" strokeLinecap="round" />
             </svg>
           </span>
         </h2>
