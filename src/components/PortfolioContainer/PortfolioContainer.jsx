@@ -12,7 +12,7 @@ const PortfolioContainer = () => {
     return (
         <div className="portfolio-container" style={{ width: '100%', position: 'relative' }}>
             <Background />
-            <div className="portfolio-hero">
+            {/* <div className="portfolio-hero">
                 <h1 className="portfolio-hero-title">
                     <span className="title-line-1">
                         Websites built to <span className="normal-text">work,</span>
@@ -22,10 +22,10 @@ const PortfolioContainer = () => {
                     </span>
                     <span className="title-line-2">scale, and last</span>
                 </h1>
-            </div>
-            <div id="portfolio-section-container">
+            </div> */}
+            {/* <div id="portfolio-section-container">
                 <PortfolioSection />
-            </div>
+            </div> */}
             <div id="services-showcase-container">
                 <SwipeableLayout>
                     <DigitalMarketingCard />

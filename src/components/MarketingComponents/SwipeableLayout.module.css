@@ -9,6 +9,8 @@
   /* This will be our main container that matches pageContainer functionality */
   position: relative;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
   height: 100vh;
   height: 100dvh;
   display: flex;

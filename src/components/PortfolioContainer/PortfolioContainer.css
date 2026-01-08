@@ -16,17 +16,24 @@
     position: relative;
     z-index: 2;
     background: white;
-    /* Ensure it covers the sticky showcase if overlapping */
+    min-height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
 }
 
 #services-showcase-container {
+<<<<<<< HEAD
     position: sticky;
     top: 0;
+=======
+    position: relative;
+>>>>>>> 130b53283e61525e9a05f44e73756a6ce07cc5ad
     width: 100%;
     z-index: 1;
-    /* Ensure it has its own space but stays pinned to bottom */
     height: 100vh;
     height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
 }
 
 .portfolio-hero-title {

@@ -14,6 +14,9 @@ html, body {
   background-position: center;
   background-repeat: no-repeat;
   touch-action: pan-y;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  height: 100vh;
 }
 
 /* Force the fixed Marketing container to be part of the flow */
@@ -26,6 +29,8 @@ div[class*="pageContainer"] {
   background-position: center !important;
   background-repeat: no-repeat !important;
   overflow-x: clip !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 

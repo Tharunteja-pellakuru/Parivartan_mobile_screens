@@ -5,7 +5,7 @@ import HeroSection from './HeroSection';
 
 const HomeContainer = () => {
     return (
-        <div className="homepage-container" style={{ position: 'relative', minHeight: '100vh', width: '100%' }}>
+        <div className="homepage-container" style={{ position: 'relative', minHeight: '100vh', width: '100%', scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
             <Background />
             <RatingBadge />
             <HeroSection />
