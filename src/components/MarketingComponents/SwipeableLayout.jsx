@@ -108,20 +108,23 @@ const SwipeableLayout = ({ children }) => {
     // Only handle vertical swipes
     if (swipeDirectionRef.current === 'vertical') {
       const deltaY = touchStartY.current - currentY;
-      const isSwipingUp = deltaY > 0; // Going to next card
-      const isSwipingDown = deltaY < 0; // Going to prev card
+      const isSwipingUp = deltaY > 0; // Going to next card (down the page)
+      const isSwipingDown = deltaY < 0; // Going to prev card (up the page)
+
+      // Check if we're at boundaries
+      const atFirstCard = currentIndexRef.current === 0;
+      const atLastCard = currentIndexRef.current === totalCards - 1;
 
       // Only prevent scroll if we have cards available in that direction
-      const canGoNext = isSwipingUp && currentIndexRef.current < totalCards - 1;
-      const canGoPrev = isSwipingDown && currentIndexRef.current > 0;
+      const canGoNext = isSwipingUp && !atLastCard;
+      const canGoPrev = isSwipingDown && !atFirstCard;
 
       if (canGoNext || canGoPrev) {
         // We can navigate - block page scroll
         if (e.cancelable) e.preventDefault();
-      } else {
-        // At boundary - allow page scroll to continue
-        // Don't prevent default, let the swipe pass through
       }
+      // At boundary: if swiping up at last card OR swiping down at first card, allow scroll
+      // by not preventing default
     }
     
     touchEndY.current = currentY;
@@ -166,9 +169,13 @@ const SwipeableLayout = ({ children }) => {
     const isScrollingDown = e.deltaY > 0;
     const isScrollingUp = e.deltaY < 0;
 
-    // Check boundaries for strict locking interaction
-    const canGoNext = isScrollingDown && currentIndexRef.current < totalCards - 1;
-    const canGoPrev = isScrollingUp && currentIndexRef.current > 0;
+    // Check if we're at boundaries
+    const atFirstCard = currentIndexRef.current === 0;
+    const atLastCard = currentIndexRef.current === totalCards - 1;
+
+    // Only prevent scroll if we have cards available in that direction
+    const canGoNext = isScrollingDown && !atLastCard;
+    const canGoPrev = isScrollingUp && !atFirstCard;
 
     if (canGoNext || canGoPrev) {
       // Intercept and prevent page scroll only if we can navigate
@@ -180,7 +187,7 @@ const SwipeableLayout = ({ children }) => {
         else goToPrev();
       }
     }
-    // If at boundary (can't go next/prev), allow page scroll to continue
+    // At boundary: allow scroll to continue by not preventing default
   }, [goToNext, goToPrev, totalCards]);
   
   useEffect(() => {
