@@ -94,7 +94,7 @@ const PortfolioSection = () => {
                 </div>
             </div>
 
-            <div className="info-card">
+            {/* <div className="info-card">
                 <div className="green-blob blob-left">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="34" viewBox="0 0 25 34" fill="none">
                         <path d="M24.2512 26.0611C23.6852 24.1011 21.6183 22.9636 19.6603 23.5344L10.8601 26.0905C8.90214 26.6571 7.76597 28.7262 8.33616 30.6863C8.90216 32.6463 10.9691 33.7837 12.927 33.2129L21.7273 30.6569C23.6852 30.0903 24.8214 28.0211 24.2512 26.0611Z" fill="#F4AEAE" />
@@ -114,7 +114,7 @@ const PortfolioSection = () => {
                 <p>
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500
                 </p>
-            </div>
+            </div> */}
 
             {/* Testimonial Popup Component */}
             {isPopupOpen && <TestimonialPopup onClose={() => setIsPopupOpen(false)} />}

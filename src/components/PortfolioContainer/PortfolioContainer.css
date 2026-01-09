@@ -22,12 +22,7 @@
 }
 
 #services-showcase-container {
-<<<<<<< HEAD
-    position: sticky;
-    top: 0;
-=======
     position: relative;
->>>>>>> 130b53283e61525e9a05f44e73756a6ce07cc5ad
     width: 100%;
     z-index: 1;
     height: 100vh;
